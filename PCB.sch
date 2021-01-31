@@ -13272,6 +13272,7 @@ Source: www.kingbright.com</description>
 <part name="SUPPLY57" library="supply2" deviceset="GND" device=""/>
 <part name="TP1" library="testpad" deviceset="PTR1" device="PAD1-17"/>
 <part name="SUPPLY58" library="supply2" deviceset="+5V" device=""/>
+<part name="TP3" library="testpad" deviceset="PTR1" device="B1,27"/>
 </parts>
 <sheets>
 <sheet>
@@ -13384,6 +13385,7 @@ Source: www.kingbright.com</description>
 <instance part="SUPPLY57" gate="GND" x="-2.54" y="-10.16"/>
 <instance part="TP1" gate="G$1" x="35.56" y="119.38"/>
 <instance part="SUPPLY58" gate="+5V" x="35.56" y="124.46"/>
+<instance part="TP3" gate="G$1" x="50.8" y="-2.54" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -14280,6 +14282,12 @@ Source: www.kingbright.com</description>
 <pinref part="IC1" gate="G$1" pin="RA2"/>
 <wire x1="17.78" y1="2.54" x2="-2.54" y2="2.54" width="0.1524" layer="91"/>
 <junction x="-2.54" y="2.54"/>
+</segment>
+</net>
+<net name="N$25" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="RA7"/>
+<pinref part="TP3" gate="G$1" pin="TP"/>
 </segment>
 </net>
 </nets>

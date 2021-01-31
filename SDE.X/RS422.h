@@ -7,8 +7,8 @@
 #include "comm.h"
 
 #define RS422_BRG_VAL   (51)
-#define TX_BUF_SIZE     (256)
-#define RX_BUF_SIZE     (256)
+#define TX_BUF_SIZE     (64) //TODO
+#define RX_BUF_SIZE     (64) //TODO
 
 #define TXBUF_SPACE ((unsigned char)((txbufread-txbufwrite)-1))
 #define RXBUF_WAITING ((unsigned char)(rxbufwrite-rxbufread))

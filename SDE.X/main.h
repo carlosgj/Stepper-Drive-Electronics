@@ -8,6 +8,8 @@
 #include "HDLC.h"
 #include "RS422.h"
 #include "time.h"
+#include "SPI.h"
+#include "EEPROM.h"
 
 void main(void);
 void init(void);

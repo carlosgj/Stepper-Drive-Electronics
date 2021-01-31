@@ -3,7 +3,9 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
+//Debug options
 //#define HUMAN_READABLE_SERIAL
+#define LOOPOUT
 
 #define TRUE 1
 #define FALSE 0
@@ -15,11 +17,8 @@
 
 #define SW_VER_STR "0.0.1"
 
-#define HINTEN INTCON0bits.GIEH = TRUE
-#define HINTDIS INTCON0bits.GIEH = FALSE
-
-#define LINTEN INTCON0bits.GIEL = TRUE
-#define LINTDIS INTCON0bits.GIEL = FALSE
+#define INTEN //INTCON0bits.GIEH = TRUE
+#define INTDIS //INTCON0bits.GIEH = FALSE
 
 unsigned int msCount = 0;
 

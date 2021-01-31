@@ -20,6 +20,13 @@ union commError_t {
     };
 } commErrors;
 
+union TlmPeriodTab_t {
+    unsigned char all[8];
+    struct{
+        unsigned char CommErrPer;
+    };
+} TlmPeriodTab;
+
 void sendModeTlm(void);
 void sendCommErrorTlm(void);
 void sendRangeTlm(void);

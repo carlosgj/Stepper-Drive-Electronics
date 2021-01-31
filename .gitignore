@@ -1,3 +1,5 @@
 SDE.X/nbproject/Makefile-*
 SDE.X/nbproject/Package-*
 SDE.X/nbproject/private/
+SDE.X/dist/
+SDE.X/build/

@@ -4,8 +4,8 @@
 void RS422_Init(void){
     
     //Setup UART pins
-//    TRISCbits.TRISC6 = OUTPUT;
-//    TRISCbits.TRISC7 = INPUT;
+    TRISBbits.TRISB5 = OUTPUT;
+    TRISBbits.TRISB2 = INPUT;
 //    U1RXPPS = 0b10111; //UART1 RX on C7
 //    RC6PPS = 0b010011; //C6 is UART1 TX
 //    
@@ -18,7 +18,8 @@ void RS422_Init(void){
 //    
 //    U1CON0bits.RXEN = TRUE;
 //    ANSELCbits.ANSELC7 = FALSE;
-//    PIE3bits.U1RXIE = TRUE;
+    PIE1bits.RCIE = TRUE;
+    PIE1bits.TXIE = TRUE;
 //    
 //    U1CON1bits.ON = TRUE;
 }

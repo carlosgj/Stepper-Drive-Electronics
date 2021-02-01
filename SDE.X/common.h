@@ -3,10 +3,17 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-//Debug options
+//######### Debug options ###########
+
+//Uncomment to provide human-readable ASCII serial messages, instead of HDLC
 //#define HUMAN_READABLE_SERIAL
+
+//Uncomment AT MOST ONE of the following to send signals to the test point
 //#define LOOPOUT
 //#define MSOUT
+
+//Uncomment to send one byte at a time to the UART, instead of using software buffering
+#define UNBUFFERED_SERTX
 
 #define TRUE 1
 #define FALSE 0

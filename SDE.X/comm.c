@@ -1,6 +1,10 @@
 #include <xc.h>
 #include "comm.h"
 
+void commInit(void){
+    memset(commErrors.all, 0, COMM_ERR_LEN);
+}
+
 void sendSUSEVR(enum StartupSeqLocation loc){
     unsigned char buf[2];
     buf[0] = EVR_STARTSEQ;
@@ -17,10 +21,5 @@ void sendSwVerEVR(void){
 }
 
 void sendCommErrorTlm(void){
-    unsigned char buf[4];
-    buf[0] = commErrors.msgBufOvf;
-    buf[1] = commErrors.frameBufOvf;
-    buf[2] = commErrors.rxBuffOvf;
-    buf[3] = commErrors.txBuffOvf;
-    sendBuf(buf, 4, TLM_COMMERROR);
+    sendBuf(commErrors.all, COMM_ERR_LEN, TLM_COMMERR);
 }

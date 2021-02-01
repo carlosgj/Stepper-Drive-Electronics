@@ -1,6 +1,5 @@
 #include <xc.h>
 #include "main.h"
-#include <stdlib.h>
 
 void main(void) {
     init();
@@ -10,23 +9,25 @@ void main(void) {
     }
 }
 
-void init(void){
+inline void init(void){
     INTDIS;
     //Setup oscillator
-    //INTCON0bits.IPEN = TRUE; //Enable interrupt priority
-    //OSCCON1bits.NDIV = 0; //Request no divider
-    //OSCFRQ = 0b0111; //48 MHz
+    OSCCONbits.SPLLEN = TRUE; //Enable 4x PLL
+    OSCCONbits.IRCF = 0b1110; //8 MHz (32 MHz with PLL)
     
 #ifdef LOOPOUT
     TRISAbits.TRISA7 = OUTPUT;
 #endif
     INTEN;
     
+    memset(systErr.all, 0, SYST_ERR_LEN); //Initialize system error counters
+    
     timerInit();
-    __delay_ms(200);
+    //__delay_ms(200);
     
     RS422_Init();
     HDLCInit();
+    commInit();
     sendSUSEVR(SUS_INITIAL);
     sendSwVerEVR();
     
@@ -35,9 +36,11 @@ void init(void){
     EEP_Init();
     
     sendSUSEVR(SUS_INITDONE);
+    
+    INTCONbits.PEIE = TRUE; //Enable peripheral interrupts
 }
 
-void run(void){    
+inline void run(void){    
     implementRx();
     
     processCommand();
@@ -54,6 +57,10 @@ void processCommand(void){
     }
     struct rx_message_t *cmd = &messageBuf[msgProcessPtr];
     switch(cmd->type){
+        case CMD_NOOP:
+            //Send ack
+            sendBuf((unsigned char *)0, 0, TLM_ACK);
+            break;
         default:
             break;
     }
@@ -62,11 +69,27 @@ void processCommand(void){
 }
 
 
-//void __interrupt(irq(default), low_priority) DEFISR(void){
-//    return;
-//}
+void interrupt ISR(void){
+    if(INTCONbits.TMR0IF){
+        TMR0ISR();
+        return;
+    }
+    
+    if(PIR1bits.RCIF){
+        RS422RXISR();
+        return;
+    }
+    
+    if(PIR1bits.TXIF){
+        RS422TXISR();
+        return;
+    }
+    
+    //Unhandled interrupt
+    systErr.unhandledInt++;
+}
 
-void halt(){
+inline void halt(){
     while(TRUE){
     }
 }

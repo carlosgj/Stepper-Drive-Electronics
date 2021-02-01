@@ -31,5 +31,8 @@ void RS422_SendBytes(unsigned char *buf, unsigned char count);
 //Safe to call even if we're already transmitting
 void RS422_StartTx(void);
 
+inline void RS422TXISR(void);
+inline void RS422RXISR(void);
+
 #endif
 

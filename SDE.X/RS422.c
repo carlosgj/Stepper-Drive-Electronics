@@ -21,11 +21,6 @@ void RS422_Init(void){
 //    PIE3bits.U1RXIE = TRUE;
 //    
 //    U1CON1bits.ON = TRUE;
-    
-    commErrors.frameBufOvf = 0;
-    commErrors.msgBufOvf = 0;
-    commErrors.rxBuffOvf = 0;
-    commErrors.txBuffOvf = 0;
 }
 
 void RS422_TxByte(unsigned char theByte){
@@ -60,7 +55,7 @@ void RS422_StartTx(void){
     
 }
 
-//void __interrupt(irq(U1TX), low_priority) RS422TXISR(void){
+inline void RS422TXISR(void){
     //Transmit the next character
     //U1TXB = txbuf[txbufread++];
     
@@ -68,9 +63,9 @@ void RS422_StartTx(void){
     //if(txbufread == txbufwrite){
     //    PIE3bits.U1TXIE = FALSE;
     //}
-//}
+}
 
-//void __interrupt(irq(U1RX), low_priority) RS422RXISR(void){
+inline void RS422RXISR(void){
     //Transfer into buffer
     //rxbuf[rxbufwrite++] = U1RXB;
-//}
+}

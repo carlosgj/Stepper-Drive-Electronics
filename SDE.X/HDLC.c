@@ -2,10 +2,7 @@
 #include "HDLC.h"
 
 void HDLCInit(void){
-    commErrors.frameBufOvf = 0;
-    commErrors.msgBufOvf = 0;
-    commErrors.rxBuffOvf = 0;
-    commErrors.txBuffOvf = 0;
+
 }
 
 void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){

@@ -28,7 +28,7 @@ enum SPIDest{
 
 void SPIInit(void);
 
-unsigned char SPIXfer(SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, unsigned char count);
+unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, unsigned char count);
 
 #endif
 

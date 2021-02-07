@@ -32,7 +32,7 @@ void SPIInit(void){
     SSP1CON1bits.SSPEN = TRUE;
 }
 
-unsigned char SPIXfer(SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, unsigned char count){
+unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, unsigned char count){
     switch(dest){
         case MC:
             MCLAT = FALSE;
@@ -84,4 +84,5 @@ unsigned char SPIXfer(SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, 
             return 1; //TODO
             break;
     }
+    return 0; //TODO
 }

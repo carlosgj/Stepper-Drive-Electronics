@@ -5,68 +5,97 @@ void RS422_Init(void){
     
     //Setup UART pins
     TRISBbits.TRISB5 = OUTPUT;
+    ANSELBbits.ANSB5 = FALSE;
     TRISBbits.TRISB2 = INPUT;
-//    U1RXPPS = 0b10111; //UART1 RX on C7
-//    RC6PPS = 0b010011; //C6 is UART1 TX
-//    
-//    U1CON0bits.TXEN = TRUE;
-//    ANSELCbits.ANSELC6 = FALSE;
-//    U1CON0bits.U1MODE = 0b0000; //8-bit async mode
-//    U1CON0bits.BRGS = 1; // FOSC/[4 (n+1)]
-//    U1BRGHbits.BRGH = (RS422_BRG_VAL >> 8);
-//    U1BRGLbits.BRGL = (RS422_BRG_VAL & 255);
-//    
-//    U1CON0bits.RXEN = TRUE;
-//    ANSELCbits.ANSELC7 = FALSE;
+    ANSELBbits.ANSB2 = FALSE;
+    APFCON0bits.RXDTSEL = TRUE; //UART RX on B2
+    APFCON1bits.TXCKSEL = TRUE; //UART RX on B5
+    
+    //Setup transmitter
+    TXSTAbits.TXEN = TRUE;
+    BAUDCONbits.BRG16 = TRUE;
+    TXSTAbits.BRGH = TRUE;
+    SPBRGH = 0;
+    SPBRGL = 68; //Should result in 115942 baud
+
+    //Setup receiver
+    RCSTAbits.CREN = TRUE; //Enable receiver
+
+    //Setup interrupts
+#ifndef UNBUFFERED_SER
     PIE1bits.RCIE = TRUE;
     PIE1bits.TXIE = TRUE;
-//    
-//    U1CON1bits.ON = TRUE;
+#endif
+    
+    //Turn on port
+    RCSTAbits.SPEN = TRUE;
 }
 
 void RS422_TxByte(unsigned char theByte){
-    //U1TXB = theByte;
-    //while(!PIR3bits.U1TXIF){};
-}
-
-void RS422_SendBytes(unsigned char *buf, unsigned char count){
-    unsigned char i;
-    for(i=0; i<count; i++){
-        RS422_TxByte(buf[i]);
+#ifdef UNBUFFERED_SER
+    TXREG = theByte;
+    asm("NOP");
+    while(!PIR1bits.TXIF){
+        
     }
+#else
+    if(TXBUF_FREE > 0){
+        //There's room in the buffer
+        txbuf[txbufwrite++] = theByte;
+    }
+    else{
+        commErrors.txBuffOvf++;
+    }
+#endif
 }
 
-void RS422_StartTx(void){
+//void RS422_SendBytes(unsigned char *buf, unsigned char count){
+//    unsigned char i;
+//    for(i=0; i<count; i++){
+//        RS422_TxByte(buf[i]);
+//    }
+//}
+
+inline void RS422_StartTx(void){
+#ifndef UNBUFFERED_SER
     //Check if we're already transmitting
-    //if(PIE3bits.U1TXIE){
-    //    return;
-    //}
+    if(PIE1bits.TXIE){
+        return;
+    }
     
     //Check if there's data in the buffer
     if(txbufread == txbufwrite){
         return;
     }
     
-    //U1TXB = txbuf[txbufread++];
+    TXREG = txbuf[txbufread++];
     
     if(txbufread != txbufwrite){
-        //PIE3bits.U1TXIE = TRUE;
+        PIE1bits.TXIE = TRUE;
     }
     
-    
+#endif
 }
 
 inline void RS422TXISR(void){
+#ifndef UNBUFFERED_SER
     //Transmit the next character
-    //U1TXB = txbuf[txbufread++];
+    TXREG = txbuf[txbufread++];
     
     //If there's no more data in the buffer, disable interrupt
-    //if(txbufread == txbufwrite){
-    //    PIE3bits.U1TXIE = FALSE;
-    //}
+    if(txbufread == txbufwrite){
+        PIE1bits.TXIE = FALSE;
+    }
+#endif
 }
 
 inline void RS422RXISR(void){
-    //Transfer into buffer
-    //rxbuf[rxbufwrite++] = U1RXB;
+    if(RXBUF_FREE > 0){
+        //Transfer into buffer
+        rxbuf[rxbufwrite++] = RCREG;
+    }
+    else{
+        commErrors.rxBuffOvf++;
+    }
+    
 }

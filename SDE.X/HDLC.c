@@ -9,47 +9,36 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     unsigned int i = 0;
     
     //Write start byte
-    if(TXBUF_SPACE < 1){commErrors.txBuffOvf++;}
-    while(TXBUF_SPACE < 1){}
-    TXBUFWRITE(HDLC_BOUNDARY);
+    RS422_TxByte(HDLC_BOUNDARY);
     
     //Write command byte
     if(commandByte == HDLC_BOUNDARY || commandByte == HDLC_ESCAPE){
-        if(TXBUF_SPACE < 2){commErrors.txBuffOvf++;}
-        while(TXBUF_SPACE < 2){}
-        
-        TXBUFWRITE(HDLC_ESCAPE);
-        TXBUFWRITE((unsigned char)(commandByte ^ 0b00100000));
+        RS422_TxByte(HDLC_ESCAPE);
+        RS422_TxByte((unsigned char)(commandByte ^ 0b00100000));
     }
     else{
-        if(TXBUF_SPACE < 1){commErrors.txBuffOvf++;}
-        while(TXBUF_SPACE < 1){}
-        TXBUFWRITE(commandByte);
+        RS422_TxByte(commandByte);
     }
     RS422_StartTx();
+    
     //Perform byte-stuffing & write message
     for(i=0; i<count; i++){
         if(buf[i] == HDLC_BOUNDARY || buf[i] == HDLC_ESCAPE){
-            if(TXBUF_SPACE < 2){commErrors.txBuffOvf++;}
-            while(TXBUF_SPACE < 2){}
-            TXBUFWRITE(HDLC_ESCAPE);
-            TXBUFWRITE((unsigned char)(buf[i] ^ 0b00100000));
+            RS422_TxByte(HDLC_ESCAPE);
+            RS422_TxByte((unsigned char)(buf[i] ^ 0b00100000));
         }
         else{
-            if(TXBUF_SPACE < 1){commErrors.txBuffOvf++;}
-            while(TXBUF_SPACE < 1){}
-            TXBUFWRITE(buf[i]);
+            RS422_TxByte(buf[i]);
         }
     }
-    if(TXBUF_SPACE < 1){commErrors.txBuffOvf++;}
-    while(TXBUF_SPACE < 1){}
-    TXBUFWRITE(HDLC_BOUNDARY);
+
+    RS422_TxByte(HDLC_BOUNDARY);
     RS422_StartTx();
 }
 
 void implementRx(void){
     //Check if there are unprocessed bytes in rx queue
-    unsigned char toRead = RXBUF_WAITING;
+    unsigned char toRead = (unsigned char)(255 - RXBUF_FREE);
     unsigned char isEscape = FALSE;
     unsigned char isInMessage = FALSE;
     __delay_ms(5);

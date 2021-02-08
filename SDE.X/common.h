@@ -13,7 +13,7 @@
 //#define MSOUT
 
 //Uncomment to send one byte at a time to the UART, instead of using software buffering
-#define UNBUFFERED_SERTX
+#define UNBUFFERED_SER
 
 #define TRUE 1
 #define FALSE 0

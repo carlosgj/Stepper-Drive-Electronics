@@ -12,6 +12,8 @@ unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
     SPIXfer(MC, datagram.bytes, result.bytes, 4);
     
     //TODO: handle status bits in result
+    
+    *data = result.data.all;
 }
 
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data){

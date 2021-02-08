@@ -9,10 +9,10 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     unsigned int i = 0;
     
     //Write start byte
-    RS422_TxByte(HDLC_BOUNDARY);
+    RS422_TxByte(HDLC_START);
     
     //Write command byte
-    if(commandByte == HDLC_BOUNDARY || commandByte == HDLC_ESCAPE){
+    if(IS_CONTROL(commandByte)){
         RS422_TxByte(HDLC_ESCAPE);
         RS422_TxByte((unsigned char)(commandByte ^ 0b00100000));
     }
@@ -23,7 +23,7 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     
     //Perform byte-stuffing & write message
     for(i=0; i<count; i++){
-        if(buf[i] == HDLC_BOUNDARY || buf[i] == HDLC_ESCAPE){
+        if( IS_CONTROL(buf[i]) ){
             RS422_TxByte(HDLC_ESCAPE);
             RS422_TxByte((unsigned char)(buf[i] ^ 0b00100000));
         }
@@ -32,17 +32,17 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
         }
     }
 
-    RS422_TxByte(HDLC_BOUNDARY);
+    RS422_TxByte(HDLC_STOP);
     RS422_StartTx();
 }
 
 void implementRx(void){
     //Check if there are unprocessed bytes in rx queue
-    unsigned char toRead = (unsigned char)(255 - RXBUF_FREE);
-    unsigned char isEscape = FALSE;
-    unsigned char isInMessage = FALSE;
-    __delay_ms(5);
-    for(; toRead > 0; toRead--){
+    unsigned char toRead;
+    static unsigned char isEscape = FALSE;
+    static unsigned char isInMessage = FALSE;
+    //__delay_ms(5);
+    for(toRead = (unsigned char)(255 - RXBUF_FREE); toRead > 0; toRead--){
         unsigned char newByte = rxbuf[rxbufread++];
         
         if(newByte == HDLC_ESCAPE){
@@ -50,31 +50,41 @@ void implementRx(void){
             continue;
         }
 
-        //Not a control byte
+        //Not an escape byte
         if(isEscape){
-            if((newByte & 0b00100000) > 0){
+            if((newByte & 0b00100000) != 0){
                 //We got an escape byte and then a byte without bit 5 clear
                 //Abort reception
-                //TODO: error handling
+                isInMessage = FALSE;
+                framePtr = 0;
+                commErrors.bitStuff++;
+                continue;
             }
             else{
-                frameBuf[framePtr++] = (unsigned char)(newByte ^ 0b00100000);
-                thisFrameSize++;
+                newByte = (unsigned char)(newByte ^ 0b00100000);
             }
         }
-        else{
-            frameBuf[framePtr++] = newByte;
-            thisFrameSize++;
-        }
+        frameBuf[framePtr++] = newByte;
         
-        if(newByte == HDLC_BOUNDARY && !isEscape){
+        if(newByte == HDLC_STOP){
             if(isInMessage){
                 //End of message.
                 isInMessage = FALSE;
-                validateFrame(thisFrameSize);
+                validateFrame(framePtr);
                 framePtr = 0;
-                thisFrameSize = 0;
                 continue;
+            }
+            else{
+                //We got a stop byte when a message wasn't in progress
+                commErrors.framing++;
+            }
+        }
+        
+        if(newByte == HDLC_START){
+            if(isInMessage){
+                //We got a start byte while a message was in progress
+                commErrors.framing++;
+                framePtr = 0;
             }
             else{
                 isInMessage = TRUE;
@@ -83,9 +93,9 @@ void implementRx(void){
         
         if(framePtr == FRAMEBUF_SIZE){
             //Buffer overrun
-            //TODO: error handling
+            commErrors.oversizeFrame++;
             framePtr = 0;
-            thisFrameSize = 0;
+            isInMessage = FALSE;
         }
     }
 }
@@ -96,11 +106,11 @@ void validateFrame(unsigned char len){
         return;
     }
     
-    if(frameBuf[0] != HDLC_BOUNDARY){
+    if(frameBuf[0] != HDLC_START){
         return;
     }
     
-    if(frameBuf[(unsigned char)(len-1)] != HDLC_BOUNDARY){
+    if(frameBuf[(unsigned char)(len-1)] != HDLC_STOP){
         return;
     }
     

@@ -7,12 +7,17 @@
 #include "RS422.h"
 #include "commConstants.h"
 
-#define HDLC_BOUNDARY   (0x7e)
+#define HDLC_START      (0x7f)
+#define HDLC_STOP       (0x7e)
 #define HDLC_ESCAPE     (0x7d)
 #define TIMESYNC_ARM    (0x7c)
+
 #define MAX_RX_SIZE     (16)
 #define RX_MSG_QUEUE    (4)
 #define FRAMEBUF_SIZE   (MAX_RX_SIZE+2)
+
+//Checks if a byte is a control byte
+#define IS_CONTROL(x)   (((x ^ 0b01111100) & 0b11111100) == 0 )
 
 struct rx_message_t{
     enum CmdType type;
@@ -26,7 +31,6 @@ unsigned char msgProcessPtr = 0;
 
 unsigned char frameBuf[FRAMEBUF_SIZE];
 unsigned char framePtr = 0;
-unsigned char thisFrameSize = 0;
 
 #define MSGBUF_WAITING ((unsigned char)(msgRxPtr-msgProcessPtr))
 

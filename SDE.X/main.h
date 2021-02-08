@@ -13,6 +13,8 @@
 #include "SPI.h"
 #include "EEPROM.h"
 #include "config.h"
+#include "TMC2130.h"
+#include "TMC429.h"
 
 #define SYST_ERR_LEN (4)
 

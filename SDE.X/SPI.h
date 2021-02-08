@@ -19,13 +19,6 @@
 #define MISOTRIS (TRISBbits.TRISB1)
 #define MOSITRIS (TRISAbits.TRISA6)
 
-enum SPIDest{
-    MC,
-    DRV1, 
-    DRV2, 
-    DRV3
-};
-
 void SPIInit(void);
 
 unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rxBuf, unsigned char count);

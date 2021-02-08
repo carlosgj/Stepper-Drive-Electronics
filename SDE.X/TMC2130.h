@@ -67,8 +67,8 @@ typedef union TMC2130_Rx_Datagram_t {
     };
 } TMC2130_Rx_Datagram;
 
-unsigned char TMC2130_read_reg(unsigned char addr, uint32_t *data);
-unsigned char TMC2130_write_reg(unsigned char addr, uint32_t data);
-
+unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t *data);
+unsigned char TMC2130_write_reg(enum SPIDest target, unsigned char addr, uint32_t data);
+void TMC2130Periodic(void);
 #endif
 

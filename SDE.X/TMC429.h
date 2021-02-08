@@ -96,6 +96,6 @@ union MC_IFCONFIG_t {
 
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data);
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data);
-
+void TMC429Periodic(void);
 #endif
 

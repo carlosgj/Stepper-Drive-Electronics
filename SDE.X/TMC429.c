@@ -1,6 +1,10 @@
 #include <xc.h>
 #include "TMC429.h"
 
+void TMC429Periodic(void){
+    
+}
+
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
     TMC429_Tx_Datagram datagram;
     TMC429_Rx_Datagram result;

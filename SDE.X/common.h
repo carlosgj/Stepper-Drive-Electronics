@@ -28,6 +28,13 @@
 #define INTEN (INTCONbits.GIE = TRUE)
 #define INTDIS (INTCONbits.GIE = FALSE)
 
+enum SPIDest{
+    MC = 0,
+    DRV1 = 1, 
+    DRV2 = 2, 
+    DRV3 = 3
+};
+
 unsigned int msCount = 0;
 
 void ItoA(unsigned char val, char* dest);

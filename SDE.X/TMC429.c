@@ -2,7 +2,12 @@
 #include "TMC429.h"
 
 void TMC429Periodic(void){
+    static unsigned char counter = 10;
+    if(counter-- != 0){
+        return;
+    }
     
+    counter = 10;
 }
 
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){

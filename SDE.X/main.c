@@ -45,6 +45,7 @@ inline void run(void){
     processCommand();
     TMC429Periodic();
     TMC2130Periodic();
+    sendTlm();
     
 #ifdef LOOPOUT
     LATAbits.LATA7 = (unsigned char)(!LATAbits.LATA7);

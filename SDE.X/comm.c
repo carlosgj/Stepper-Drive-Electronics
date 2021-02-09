@@ -3,6 +3,67 @@
 
 void commInit(void){
     memset(commErrors.all, 0, COMM_ERR_LEN);
+    
+    //Setup tlm times
+    memcpy(TlmElapsed.all, TlmPeriodTab.all, TLM_PERIOD_TAB_LEN);
+}
+
+void sendTlm(){
+    if(TlmElapsed.SystStat == 0){
+        sendSystStatTlm();
+        TlmElapsed.SystStat = TlmPeriodTab.SystStat;
+    }
+    else{
+        TlmElapsed.SystStat--;
+    }
+    
+    if(TlmElapsed.SystErr == 0){
+        sendSystErrorTlm();
+        TlmElapsed.SystErr = TlmPeriodTab.SystErr;
+    }
+    else{
+        TlmElapsed.SystErr--;
+    }
+    
+    if(TlmElapsed.CommErr == 0){
+        sendCommErrorTlm();
+        TlmElapsed.CommErr = TlmPeriodTab.CommErr;
+    }
+    else{
+        TlmElapsed.CommErr--;
+    }
+    
+    if(TlmElapsed.EEPErr == 0){
+        sendEEPROMErrorTlm();
+        TlmElapsed.EEPErr = TlmPeriodTab.EEPErr;
+    }
+    else{
+        TlmElapsed.EEPErr--;
+    }
+    
+    if(TlmElapsed.M1Stat == 0){
+        sendSystStatTlm();
+        TlmElapsed.M1Stat = TlmPeriodTab.M1Stat;
+    }
+    else{
+        TlmElapsed.M1Stat--;
+    }
+    
+    if(TlmElapsed.M2Stat == 0){
+        sendSystStatTlm();
+        TlmElapsed.M2Stat = TlmPeriodTab.M2Stat;
+    }
+    else{
+        TlmElapsed.M2Stat--;
+    }
+    
+    if(TlmElapsed.M3Stat == 0){
+        sendSystStatTlm();
+        TlmElapsed.M3Stat = TlmPeriodTab.M3Stat;
+    }
+    else{
+        TlmElapsed.M3Stat--;
+    }
 }
 
 void sendSUSEVR(enum StartupSeqLocation loc){
@@ -22,4 +83,16 @@ void sendSwVerEVR(void){
 
 void sendCommErrorTlm(void){
     sendBuf(commErrors.all, COMM_ERR_LEN, TLM_COMMERR);
+}
+
+void sendSystStatTlm(void){
+    
+}
+
+void sendSystErrorTlm(void){
+    
+}
+
+void sendEEPROMErrorTlm(void){
+    
 }

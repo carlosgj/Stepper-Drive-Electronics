@@ -29,19 +29,22 @@ union commError_t {
 union TlmPeriodTab_t {
     unsigned char all[TLM_PERIOD_TAB_LEN];
     struct{
-        unsigned char SystStatPer;
-        unsigned char SystErrPer;
-        unsigned char CommErrPer;
-        unsigned char EEPErrPer;
-        unsigned char M1StatPer;
-        unsigned char M2StatPer;
-        unsigned char M3StatPer;
+        unsigned char SystStat;
+        unsigned char SystErr;
+        unsigned char CommErr;
+        unsigned char EEPErr;
+        unsigned char M1Stat;
+        unsigned char M2Stat;
+        unsigned char M3Stat;
     };
-} TlmPeriodTab;
+} TlmPeriodTab, TlmElapsed;
 
 void commInit(void);
+void sendTlm(void);
 void sendCommErrorTlm(void);
-
+void sendSystStatTlm(void);
+void sendSystErrorTlm(void);
+void sendEEPROMErrorTlm(void);
 void sendSUSEVR(enum StartupSeqLocation loc);
 void sendSwVerEVR(void);
 

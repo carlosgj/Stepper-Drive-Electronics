@@ -4,6 +4,7 @@
 #include <xc.h> 
 #include <stdint.h>
 #include "common.h"
+#include "SPI.h"
 
 #define DRV_REG_GCONF       (0x00)
 #define DRV_REG_GSTAT       (0x01)
@@ -66,6 +67,16 @@ typedef union TMC2130_Rx_Datagram_t {
         unsigned unused3:1;
     };
 } TMC2130_Rx_Datagram;
+
+union TMC2130_GSTAT_t {
+    uint32_t all;
+    unsigned char bytes[4];
+    struct {
+        unsigned reset      :1;
+        unsigned drv_err    :1;
+        unsigned uv_cp      :1;
+    };
+};
 
 unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t *data);
 unsigned char TMC2130_write_reg(enum SPIDest target, unsigned char addr, uint32_t data);

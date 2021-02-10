@@ -15,7 +15,7 @@
 #include "config.h"
 #include "TMC2130.h"
 #include "TMC429.h"
-#include "motioncontrol.h"
+//#include "motioncontrol.h"
 
 #define SYST_ERR_LEN (1)
 

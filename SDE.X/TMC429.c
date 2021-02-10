@@ -11,6 +11,7 @@ void TMC429Periodic(void){
 }
 
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
+    unsigned char success;
     TMC429_Tx_Datagram datagram;
     TMC429_Rx_Datagram result;
     datagram.read = TRUE;
@@ -18,14 +19,21 @@ unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
     datagram.addr = addr;
     datagram.data.all = 0;
     
-    SPIXfer(MC, datagram.bytes, result.bytes, 4);
+    success = SPIXfer(MC, datagram.bytes, result.bytes, 4);
+    
+    if(success != 0){
+        return success;
+    }
     
     //TODO: handle status bits in result
     
     *data = result.data.all;
+    
+    return 0;
 }
 
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data){
+    unsigned char success;
     TMC429_Tx_Datagram datagram;
     TMC429_Rx_Datagram result;
     datagram.read = FALSE;
@@ -33,7 +41,13 @@ unsigned char TMC429_write_reg(unsigned char addr, uint24_t data){
     datagram.addr = addr;
     datagram.data.all = data;
     
-    SPIXfer(MC, datagram.bytes, result.bytes, 4);
+    success = SPIXfer(MC, datagram.bytes, result.bytes, 4);
+    
+    if(success != 0){
+        return success;
+    }
     
     //TODO: handle status bits in result
+    
+    return 0;
 }

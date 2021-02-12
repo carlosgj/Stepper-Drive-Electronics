@@ -2,6 +2,7 @@
 #define	COMMON_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include <stdint.h>
 
 //######### Debug options ###########
 
@@ -35,7 +36,23 @@ enum SPIDest{
     DRV3 = 3
 };
 
+enum MotorState{
+    MS_IDLE,
+    MS_HOMING,
+    MS_HOMED
+};
+
+struct MotorStatus_t {
+    unsigned isHomed    :1;
+    unsigned isHoming   :1;
+    unsigned leftLimit  :1;
+    unsigned rightLimit :1;
+    uint24_t target;
+    uint24_t actual;
+} M1Stat, M2Stat, M3Stat;
+
 unsigned int msCount = 0;
+unsigned int inputVoltage;
 
 void ItoA(unsigned char val, char* dest);
 

@@ -15,6 +15,7 @@
 #include "config.h"
 #include "TMC2130.h"
 #include "TMC429.h"
+#include "adc.h"
 //#include "motioncontrol.h"
 
 #define SYST_ERR_LEN (1)
@@ -29,6 +30,7 @@ union SystErr_t {
 void main(void);
 inline void init(void);
 inline void run(void);
+void getInputVoltage(void);
 inline void halt(void);
 void processCommand(void);
 

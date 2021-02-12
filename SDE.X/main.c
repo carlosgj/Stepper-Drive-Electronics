@@ -20,6 +20,10 @@ inline void init(void){
 #endif
     INTEN;
     
+    //All pins to digital
+    ANSELA = 0;
+    ANSELB = 0;
+    
     memset(systErr.all, 0, SYST_ERR_LEN); //Initialize system error counters
     
     timerInit();
@@ -35,6 +39,8 @@ inline void init(void){
     
     EEP_Init();
     
+    ADC_Init();
+    
     sendSUSEVR(SUS_INITDONE);
     
     INTCONbits.PEIE = TRUE; //Enable peripheral interrupts
@@ -45,6 +51,7 @@ inline void run(void){
     processCommand();
     TMC429Periodic();
     TMC2130Periodic();
+    getInputVoltage();
     sendTlm();
     
 #ifdef LOOPOUT
@@ -70,6 +77,9 @@ void processCommand(void){
     if(msgProcessPtr == RX_MSG_QUEUE){msgProcessPtr = 0;}
 }
 
+void getInputVoltage(void){
+    takeMeasurement(ADCH_AN2, 4, &inputVoltage);
+}
 
 void interrupt ISR(void){
     if(INTCONbits.TMR0IF){

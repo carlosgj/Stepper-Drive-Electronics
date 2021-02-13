@@ -71,6 +71,7 @@ void processCommand(void){
             sendBuf((unsigned char *)0, 0, TLM_ACK);
             break;
         default:
+            commErrors.unkOpcode++;
             break;
     }
     msgProcessPtr++;

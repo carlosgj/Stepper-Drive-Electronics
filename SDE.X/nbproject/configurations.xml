@@ -16,6 +16,7 @@
       <itemPath>config.h</itemPath>
       <itemPath>TMC2130.h</itemPath>
       <itemPath>TMC429.h</itemPath>
+      <itemPath>adc.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

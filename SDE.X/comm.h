@@ -10,7 +10,7 @@
 #define PRINT(x) sendBuf((unsigned char *)x, sizeof(x), TLM_TEXT)
 //#define PRINT(x) RS422_SendBytes((unsigned char *)x, sizeof(x))
 
-#define COMM_ERR_LEN (7)
+#define COMM_ERR_LEN (8)
 #define TLM_PERIOD_TAB_LEN (8)
 
 union commError_t {
@@ -23,6 +23,7 @@ union commError_t {
         unsigned char bitStuff;
         unsigned char oversizeFrame;
         unsigned char framing;
+        unsigned char unkOpcode;
     };
 } commErrors;
 

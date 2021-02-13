@@ -14,8 +14,9 @@ void SPIInit(void){
     //Setup MSSP
     SSP1STATbits.SMP = FALSE; //TODO
     SSP1STATbits.CKE = FALSE; //TODO
-    SSP1CON1bits.CKP = FALSE; //TODO
-    SSP1CON1bits.SSPM = 0b0000; //SPI master, clock = Fosc/4
+    SSP1CON1bits.CKP = TRUE; //TODO
+    //SSP1CON1bits.SSPM = 0b0000; //SPI master, clock = Fosc/4
+    SSP1CON1bits.SSPM = 0b0010;
     
     //Set CS directions
     MCTRIS = OUTPUT;
@@ -52,9 +53,10 @@ unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rx
             break;
     }
     
-    unsigned char i;
+    unsigned char i = count;
     unsigned char timeout;
-    for(i=0; i<count; i++){
+    do{
+        i--;
         SSP1IF = FALSE;
         timeout = SPI_TIMEOUT;
         SSP1BUF = txBuf[i];
@@ -66,7 +68,7 @@ unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rx
             }
         }
         rxBuf[i] = SSP1BUF;
-    }
+    }while(i>0);
     
     switch(dest){
         case MC:

@@ -46,13 +46,9 @@
 #define MC_COMMON_CONFIG    (15)
 
 typedef union TMC429_Tx_Datagram_t {
-    uint32_t all;
     unsigned char bytes[4];
     struct{
-        union {
-            uint24_t all;
-            unsigned char bytes[3];
-        } data;
+        uint24_t data;
         unsigned read   :1;
         unsigned addr   :6;
         unsigned RRS    :1;
@@ -60,13 +56,9 @@ typedef union TMC429_Tx_Datagram_t {
 } TMC429_Tx_Datagram;
 
 typedef union TMC429_Rx_Datagram_t {
-    uint32_t all;
     unsigned char bytes[4];
     struct{
-        union {
-            uint24_t all;
-            unsigned char bytes[3];
-        } data;
+        uint24_t data;
         unsigned eqt1   :1;
         unsigned rs1    :1;
         unsigned eqt2   :1;

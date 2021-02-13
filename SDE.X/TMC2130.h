@@ -41,10 +41,7 @@
 typedef union TMC2130_Tx_Datagram_t {
     unsigned char bytes[5];
     struct{
-        union {
-            uint32_t all;
-            unsigned char bytes[4];
-        } data;
+        uint32_t data;
         unsigned addr   :7;    
         unsigned write  :1;
     };
@@ -53,10 +50,7 @@ typedef union TMC2130_Tx_Datagram_t {
 typedef union TMC2130_Rx_Datagram_t {
     unsigned char bytes[5];
     struct{
-        union {
-            uint32_t all;
-            unsigned char bytes[4];
-        } data;
+        uint32_t  data;
         unsigned reset  :1;
         unsigned drv_err:1;
         unsigned sg2    :1;
@@ -78,6 +72,7 @@ union TMC2130_GSTAT_t {
     };
 };
 
+void TMC2130Init(void);
 unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t *data);
 unsigned char TMC2130_write_reg(enum SPIDest target, unsigned char addr, uint32_t data);
 void TMC2130Periodic(void);

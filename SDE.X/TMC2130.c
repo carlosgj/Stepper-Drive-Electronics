@@ -1,6 +1,15 @@
 #include <xc.h>
 #include "TMC2130.h"
 
+void TMC2130Init(void){
+    //Verify ID reg
+    uint32_t data;
+    TMC2130_read_reg(DRV1, DRV_REG_IOIN, &data);
+    if((data >> 24) != 0x11){
+        asm("NOP");
+    }
+}
+
 void TMC2130Periodic(void){
     static unsigned char counter = 10;
     if(counter-- != 0){
@@ -26,9 +35,9 @@ unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t
     TMC2130_Rx_Datagram result;
     datagram.write = FALSE;
     datagram.addr = addr;
-    datagram.data.all = 0;
+    datagram.data = 0;
     
-    success = SPIXfer(MC, datagram.bytes, result.bytes, 5);
+    success = SPIXfer(target, datagram.bytes, result.bytes, 5);
     
     if(success != 0){
         return success;
@@ -36,7 +45,7 @@ unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t
     
     //TODO: handle status bits in result
     
-    *data = result.data.all;
+    *data = result.data;
     return 0;
 }
 
@@ -46,9 +55,9 @@ unsigned char TMC2130_write_reg(enum SPIDest target, unsigned char addr, uint32_
     TMC2130_Rx_Datagram result;
     datagram.write = TRUE;
     datagram.addr = addr;
-    datagram.data.all = data;
+    datagram.data = data;
     
-    success = SPIXfer(MC, datagram.bytes, result.bytes, 4);
+    success = SPIXfer(target, datagram.bytes, result.bytes, 5);
     
     if(success != 0){
         return success;

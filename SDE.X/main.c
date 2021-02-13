@@ -11,6 +11,10 @@ void main(void) {
 
 inline void init(void){
     INTDIS;
+    //Setup pins
+    TRISAbits.TRISA0 = OUTPUT;
+    DRVDS;
+    
     //Setup oscillator
     OSCCONbits.SPLLEN = TRUE; //Enable 4x PLL
     OSCCONbits.IRCF = 0b1110; //8 MHz (32 MHz with PLL)

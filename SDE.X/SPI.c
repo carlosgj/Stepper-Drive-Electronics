@@ -7,6 +7,7 @@ void SPIInit(void){
     APFCON0bits.SDO1SEL = TRUE; //SDO1 on RA6
     
     //Set SPI directions
+    CLKTRIS = OUTPUT;
     MISOTRIS = INPUT;
     MOSITRIS = OUTPUT;
     

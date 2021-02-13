@@ -16,6 +16,7 @@
 #define DRV2TRIS (TRISBbits.TRISB0)
 #define DRV3TRIS (TRISAbits.TRISA4)
 
+#define CLKTRIS  (TRISBbits.TRISB4)
 #define MISOTRIS (TRISBbits.TRISB1)
 #define MOSITRIS (TRISAbits.TRISA6)
 

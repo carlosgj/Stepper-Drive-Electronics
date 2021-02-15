@@ -31,7 +31,7 @@ inline void init(void){
     memset(systErr.all, 0, SYST_ERR_LEN); //Initialize system error counters
     
     timerInit();
-    __delay_ms(200);
+    __delay_ms(400);
     
     RS422_Init();
     HDLCInit();

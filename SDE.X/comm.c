@@ -4,10 +4,7 @@
 void commInit(void){
     memset(commErrors.all, 0, COMM_ERR_LEN);
     
-    TlmPeriodTab.CommErr = 100;
-    TlmPeriodTab.SystErr = 100;
-    TlmPeriodTab.EEPErr = 100;
-    TlmPeriodTab.SystStat = 100;
+    memcpy(TlmPeriodTab.all, defaultTlmPeriods.all, TLM_PERIOD_TAB_LEN);
     
     //Setup tlm times
     //memcpy(TlmElapsed.all, TlmPeriodTab.all, TLM_PERIOD_TAB_LEN);

@@ -41,6 +41,8 @@ union TlmPeriodTab_t {
     };
 } TlmPeriodTab, TlmElapsed;
 
+const union TlmPeriodTab_t defaultTlmPeriods = {50, 100, 100, 100, 100, 100, 100};
+
 void commInit(void);
 void sendTlm(void);
 void sendCommErrorTlm(void);

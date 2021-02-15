@@ -19,7 +19,6 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     else{
         RS422_TxByte(commandByte);
     }
-    RS422_StartTx();
     
     //Perform byte-stuffing & write message
     for(i=0; i<count; i++){

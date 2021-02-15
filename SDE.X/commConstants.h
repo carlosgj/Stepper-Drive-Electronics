@@ -28,7 +28,7 @@ enum TlmType{
     TLM_EVR =       3,
     TLM_SYSTERR =   4,
     TLM_COMMERR =   5,
-    TLM_MOTION =    6,
+    TLM_EEPERR =    6,
     TLM_HOMDIFF =   7,
     TLM_M1STAT =    8,
     TLM_M2STAT =    9,

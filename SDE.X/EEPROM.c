@@ -4,7 +4,7 @@
 void EEP_Init(void){
     EECON1bits.WREN = FALSE;
     
-    EEPErrors.all = 0;
+    memset(EEPErrors.all, 0, EEP_ERR_LEN);
 }
 
 unsigned char EEP_Read(unsigned char address, unsigned char len, unsigned char *dest){

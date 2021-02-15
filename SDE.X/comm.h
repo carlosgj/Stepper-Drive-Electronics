@@ -6,6 +6,7 @@
 #include "common.h"
 #include "commConstants.h"
 #include "HDLC.h"
+#include "EEPROM.h"
 
 #define PRINT(x) sendBuf((unsigned char *)x, sizeof(x), TLM_TEXT)
 //#define PRINT(x) RS422_SendBytes((unsigned char *)x, sizeof(x))

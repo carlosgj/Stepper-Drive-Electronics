@@ -75,24 +75,24 @@ inline void RS422_StartTx(void){
     if(txbufread == TX_BUF_SIZE){
         txbufread = 0;
     }
-    if(txbufread != txbufwrite){
-        PIE1bits.TXIE = TRUE;
-    }
+    PIE1bits.TXIE = TRUE;
     
 #endif
 }
 
 inline void RS422TXISR(void){
 #ifndef UNBUFFERED_SER
+    //If there's no more data in the buffer, disable interrupt
+    if(txbufread == txbufwrite){
+        PIE1bits.TXIE = FALSE;
+        return;
+    }
     //Transmit the next character
     TXREG = txbuf[txbufread++];
     if(txbufread == TX_BUF_SIZE){
         txbufread = 0;
     }
-    //If there's no more data in the buffer, disable interrupt
-    if(txbufread == txbufwrite){
-        PIE1bits.TXIE = FALSE;
-    }
+
 #endif
 }
 
@@ -102,7 +102,13 @@ inline void RS422RXISR(void){
         rxbuf[rxbufwrite++] = RCREG;
     }
     else{
+        volatile unsigned char foo = RCREG; //Throw byte away
         commErrors.rxBuffOvf++;
+    }
+    if(RCSTAbits.FERR || RCSTAbits.OERR){
+        RCSTAbits.CREN = FALSE;
+        RCSTAbits.CREN = TRUE;
+        //TODO
     }
     
 }

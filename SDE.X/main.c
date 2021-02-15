@@ -31,7 +31,7 @@ inline void init(void){
     memset(systErr.all, 0, SYST_ERR_LEN); //Initialize system error counters
     
     timerInit();
-    //__delay_ms(200);
+    __delay_ms(200);
     
     RS422_Init();
     HDLCInit();
@@ -53,11 +53,11 @@ inline void init(void){
 }
 
 inline void run(void){    
-    //implementRx();
-    //processCommand();
+    implementRx();
+    processCommand();
     //TMC429Periodic();
     //TMC2130Periodic();
-    //getInputVoltage();
+    getInputVoltage();
     sendTlm();
     __delay_ms(10);
     CLRWDT();
@@ -86,25 +86,25 @@ void processCommand(void){
 }
 
 void getInputVoltage(void){
-    takeMeasurement(ADCH_AN2, 4, &inputVoltage);
+    takeMeasurement(ADCH_AN2, 4, &(systStat.inputVoltage));
 }
 
 void interrupt ISR(void){
-    if(INTCONbits.TMR0IF){
-        TMR0ISR();
-        return;
-    }
     
-    if(PIR1bits.RCIF){
+    if(PIE1bits.RCIE && PIR1bits.RCIF){
         RS422RXISR();
         return;
     }
     
-    if(PIR1bits.TXIF){
+    if(PIE1bits.TXIE && PIR1bits.TXIF){
         RS422TXISR();
         return;
     }
     
+    if(INTCONbits.TMR0IF){
+        TMR0ISR();
+        return;
+    }
     //Unhandled interrupt
     systErr.unhandledInt++;
 }

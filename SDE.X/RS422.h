@@ -11,7 +11,7 @@
 #define RX_BUF_SIZE     (48) //TODO
 
 #define TXBUF_FREE ((unsigned char)((txbufread-txbufwrite)-1))
-#define RXBUF_FREE ((unsigned char)((rxbufwrite-rxbufread)-1))
+#define RXBUF_FREE ((unsigned char)((rxbufread-rxbufwrite)-1))
 
 //#define TXBUFWRITE(x) txbuf[txbufwrite++] = x
 

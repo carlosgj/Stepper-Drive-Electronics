@@ -6,9 +6,15 @@ void commInit(void){
     
     TlmPeriodTab.CommErr = 100;
     TlmPeriodTab.SystErr = 100;
+    TlmPeriodTab.EEPErr = 100;
+    TlmPeriodTab.SystStat = 100;
     
     //Setup tlm times
-    memcpy(TlmElapsed.all, TlmPeriodTab.all, TLM_PERIOD_TAB_LEN);
+    //memcpy(TlmElapsed.all, TlmPeriodTab.all, TLM_PERIOD_TAB_LEN);
+    TlmElapsed.CommErr = 0;
+    TlmElapsed.EEPErr = 20;
+    TlmElapsed.SystErr = 40;
+    TlmElapsed.SystStat = 80;
 }
 
 void sendTlm(){
@@ -45,7 +51,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M1Stat == 0){
-        sendSystStatTlm();
+        //TODO
         TlmElapsed.M1Stat = TlmPeriodTab.M1Stat;
     }
     else{
@@ -53,7 +59,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M2Stat == 0){
-        sendSystStatTlm();
+        //TODO
         TlmElapsed.M2Stat = TlmPeriodTab.M2Stat;
     }
     else{
@@ -61,7 +67,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M3Stat == 0){
-        sendSystStatTlm();
+        //TODO
         TlmElapsed.M3Stat = TlmPeriodTab.M3Stat;
     }
     else{
@@ -89,7 +95,7 @@ void sendCommErrorTlm(void){
 }
 
 void sendSystStatTlm(void){
-    
+    sendBuf(systStat.all, SYST_STAT_LEN, TLM_SYSTSTAT);
 }
 
 void sendSystErrorTlm(void){
@@ -97,5 +103,5 @@ void sendSystErrorTlm(void){
 }
 
 void sendEEPROMErrorTlm(void){
-    
+    sendBuf(EEPErrors.all, EEP_ERR_LEN, TLM_EEPERR);
 }

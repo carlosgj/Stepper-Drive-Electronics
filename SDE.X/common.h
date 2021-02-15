@@ -59,8 +59,17 @@ union SystErr_t {
     };
 } systErr;
 
+#define SYST_STAT_LEN (3)
+union SystStatus_t{
+    unsigned char all[SYST_STAT_LEN];
+    struct{
+        uint16_t inputVoltage;
+        unsigned motEn  :1;
+        unsigned RESERVED :7;
+    };
+} systStat;
+
 unsigned int msCount = 0;
-unsigned int inputVoltage;
 
 void ItoA(unsigned char val, char* dest);
 

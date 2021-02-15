@@ -2,6 +2,7 @@
 #define	EEPROM_H
 
 #include <xc.h> 
+#include <string.h>
 #include "common.h"
 
 #define EEP_ERR_SUCCESS     (0)
@@ -10,12 +11,14 @@
 #define EEP_ERR_COMPLEMENT  (3)
 #define EEP_ERR_INVAL_ADR   (4)
 
+#define EEP_ERR_LEN (3)
+
 union EEPError_t {
-    unsigned long all;
+    unsigned char all[EEP_ERR_LEN];
     struct {
+        unsigned char writeTimeout;
         unsigned char readback;
         unsigned char complement;
-        unsigned char writeTimeout;
     };
 } EEPErrors;
 

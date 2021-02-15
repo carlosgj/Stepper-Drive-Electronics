@@ -26,14 +26,14 @@ enum TlmType{
     TLM_NAK =       1,
     TLM_SYSTSTAT =  2,
     TLM_EVR =       3,
-    TLM_COMMERR =   4,
-    TLM_MOTION =    5,
-    TLM_HOMDIFF =   6,
-    TLM_M1STAT =    7,
-    TLM_M2STAT =    8,
-    TLM_M3STAT =    9,
-    TLM_MODE =      34,
-    TLM_REG =       10,
+    TLM_SYSTERR =   4,
+    TLM_COMMERR =   5,
+    TLM_MOTION =    6,
+    TLM_HOMDIFF =   7,
+    TLM_M1STAT =    8,
+    TLM_M2STAT =    9,
+    TLM_M3STAT =    10,
+    TLM_REG =       11
 };
 
 enum EVRID {

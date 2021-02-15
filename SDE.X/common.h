@@ -14,7 +14,7 @@
 //#define MSOUT
 
 //Uncomment to send one byte at a time to the UART, instead of using software buffering
-#define UNBUFFERED_SER
+//#define UNBUFFERED_SER
 
 #define TRUE 1
 #define FALSE 0
@@ -50,6 +50,14 @@ struct MotorStatus_t {
     uint24_t target;
     uint24_t actual;
 } M1Stat, M2Stat, M3Stat;
+
+#define SYST_ERR_LEN (1)
+union SystErr_t {
+    unsigned char all[SYST_ERR_LEN];
+    struct{
+        unsigned char unhandledInt;
+    };
+} systErr;
 
 unsigned int msCount = 0;
 unsigned int inputVoltage;

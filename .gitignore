@@ -3,3 +3,7 @@ SDE.X/nbproject/Package-*
 SDE.X/nbproject/private/
 SDE.X/dist/
 SDE.X/build/
+COSMOS/Vendor/
+COSMOS/SDE/outputs/
+COSMOS/SDE/tools/
+COSMOS/Basic/

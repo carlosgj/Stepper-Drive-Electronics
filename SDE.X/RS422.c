@@ -42,6 +42,9 @@ void RS422_TxByte(unsigned char theByte){
     if(TXBUF_FREE > 0){
         //There's room in the buffer
         txbuf[txbufwrite++] = theByte;
+        if(txbufwrite == TX_BUF_SIZE){
+            txbufwrite = 0;
+        }
     }
     else{
         commErrors.txBuffOvf++;
@@ -69,7 +72,9 @@ inline void RS422_StartTx(void){
     }
     
     TXREG = txbuf[txbufread++];
-    
+    if(txbufread == TX_BUF_SIZE){
+        txbufread = 0;
+    }
     if(txbufread != txbufwrite){
         PIE1bits.TXIE = TRUE;
     }
@@ -81,7 +86,9 @@ inline void RS422TXISR(void){
 #ifndef UNBUFFERED_SER
     //Transmit the next character
     TXREG = txbuf[txbufread++];
-    
+    if(txbufread == TX_BUF_SIZE){
+        txbufread = 0;
+    }
     //If there's no more data in the buffer, disable interrupt
     if(txbufread == txbufwrite){
         PIE1bits.TXIE = FALSE;

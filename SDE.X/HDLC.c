@@ -57,7 +57,7 @@ void implementRx(void){
                 //Abort reception
                 isInMessage = FALSE;
                 framePtr = 0;
-                commErrors.bitStuff++;
+                commErrors.byteStuff++;
                 continue;
             }
             else{

@@ -4,6 +4,9 @@
 void commInit(void){
     memset(commErrors.all, 0, COMM_ERR_LEN);
     
+    TlmPeriodTab.CommErr = 100;
+    TlmPeriodTab.SystErr = 100;
+    
     //Setup tlm times
     memcpy(TlmElapsed.all, TlmPeriodTab.all, TLM_PERIOD_TAB_LEN);
 }
@@ -90,7 +93,7 @@ void sendSystStatTlm(void){
 }
 
 void sendSystErrorTlm(void){
-    
+    sendBuf(systErr.all, SYST_ERR_LEN, TLM_SYSTERR);
 }
 
 void sendEEPROMErrorTlm(void){

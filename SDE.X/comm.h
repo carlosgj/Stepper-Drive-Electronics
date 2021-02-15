@@ -20,7 +20,7 @@ union commError_t {
         unsigned char rxBuffOvf;
         unsigned char frameBufOvf;
         unsigned char msgBufOvf;
-        unsigned char bitStuff;
+        unsigned char byteStuff;
         unsigned char oversizeFrame;
         unsigned char framing;
         unsigned char unkOpcode;

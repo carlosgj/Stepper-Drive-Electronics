@@ -45,19 +45,22 @@ inline void init(void){
     
     ADC_Init();
     
+    TMC2130Init();
+    
     sendSUSEVR(SUS_INITDONE);
     
     INTCONbits.PEIE = TRUE; //Enable peripheral interrupts
 }
 
 inline void run(void){    
-    implementRx();
-    processCommand();
-    TMC429Periodic();
-    TMC2130Periodic();
-    getInputVoltage();
+    //implementRx();
+    //processCommand();
+    //TMC429Periodic();
+    //TMC2130Periodic();
+    //getInputVoltage();
     sendTlm();
-    
+    __delay_ms(10);
+    CLRWDT();
 #ifdef LOOPOUT
     LATAbits.LATA7 = (unsigned char)(!LATAbits.LATA7);
 #endif

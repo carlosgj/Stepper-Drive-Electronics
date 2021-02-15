@@ -18,18 +18,8 @@
 #include "adc.h"
 //#include "motioncontrol.h"
 
-#define SYST_ERR_LEN (1)
-
 #define DRVEN (LATAbits.LATA0 = FALSE)
 #define DRVDS (LATAbits.LATA0 = TRUE)
-
-
-union SystErr_t {
-    unsigned char all[SYST_ERR_LEN];
-    struct{
-        unsigned char unhandledInt;
-    };
-} systErr;
 
 void main(void);
 inline void init(void);

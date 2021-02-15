@@ -1,0 +1,28 @@
+TELEMETRY SDE ACK BIG_ENDIAN
+    APPEND_ID_ITEM OPCODE 8 UINT 0 "Opcode"
+        FORMAT_STRING "0x%0X"
+        
+TELEMETRY SDE NAK BIG_ENDIAN
+    APPEND_ID_ITEM OPCODE 8 UINT 1 "Opcode"
+        FORMAT_STRING "0x%0X"        
+        
+TELEMETRY SDE UPT BIG_ENDIAN "System Status"
+    APPEND_ID_ITEM OPCODE 8 UINT 2 "Opcode"
+        FORMAT_STRING "0x%0X"
+
+TELEMETRY SDE SYSTERR BIG_ENDIAN "System Errors"
+    APPEND_ID_ITEM OPCODE 8 UINT 4 "Opcode"
+        FORMAT_STRING "0x%0X"
+    APPEND_ITEM UNHINT 8 UINT "Unhandled Interrupts"    
+    
+TELEMETRY SDE COMMERR BIG_ENDIAN "Comm Errors"
+    APPEND_ID_ITEM OPCODE 8 UINT 5 "Opcode"
+        FORMAT_STRING "0x%0X"
+    APPEND_ITEM TXBOVF 8 UINT "TX Buffer Overflows"
+    APPEND_ITEM RXBOVF 8 UINT "RX Buffer Overflows"
+    APPEND_ITEM FBOVF 8 UINT "Frame Buffer Overflows"
+    APPEND_ITEM MBOVF 8 UINT "Message Buffer Overflows"
+    APPEND_ITEM BS 8 UINT "Bytestuffing Errors"
+    APPEND_ITEM OVSF 8 UINT "Oversize Frames"
+    APPEND_ITEM FRAMING 8 UINT "Framing Errors"
+    APPEND_ITEM UNKOP 8 UINT "Unknown Opcodes"

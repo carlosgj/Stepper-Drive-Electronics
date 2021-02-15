@@ -1,0 +1,5 @@
+# This is a segment of the main cmd_tlm_server.txt that will be used with
+# AUTO_INTERFACE_TARGETS or INTERFACE_TARGET
+
+INTERFACE SDE-UDP udp_interface.rb localhost 8011 8010 8012 nil 128 10.0 nil
+  TARGET SDE

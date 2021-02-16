@@ -76,7 +76,7 @@ void sendSUSEVR(enum StartupSeqLocation loc){
     unsigned char buf[2];
     buf[0] = EVR_STARTSEQ;
     buf[1] = loc;
-    sendBuf(buf, 2, TLM_EVR);
+    sendBufLE(buf, 2, TLM_EVR);
 }
 
 void sendSwVerEVR(void){
@@ -84,7 +84,7 @@ void sendSwVerEVR(void){
     const unsigned char *ver = SW_VER_STR;
     buf[0] = EVR_SWVER;
     memcpy(buf+1, ver, sizeof(SW_VER_STR));
-    sendBuf(buf, sizeof(SW_VER_STR)+1, TLM_EVR);
+    sendBufLE(buf, sizeof(SW_VER_STR)+1, TLM_EVR);
 }
 
 void sendCommErrorTlm(void){
@@ -98,7 +98,7 @@ void sendCommErrorTlm(void){
     commErrors.framing = 7;
     commErrors.unkOpcode = 8;
 #endif
-    sendBuf(commErrors.all, COMM_ERR_LEN, TLM_COMMERR);
+    sendBufBE(commErrors.all, COMM_ERR_LEN, TLM_COMMERR);
 }
 
 void sendSystStatTlm(void){
@@ -107,14 +107,14 @@ void sendSystStatTlm(void){
     systStat.TMC429Stat = 1;
     systStat.motEn = 1;
 #endif
-    sendBuf(systStat.all, SYST_STAT_LEN, TLM_SYSTSTAT);
+    sendBufBE(systStat.all, SYST_STAT_LEN, TLM_SYSTSTAT);
 }
 
 void sendSystErrorTlm(void){
 #ifdef TLM_TEST_PATTERN
     systErr.unhandledInt = 0x0f;
 #endif
-    sendBuf(systErr.all, SYST_ERR_LEN, TLM_SYSTERR);
+    sendBufBE(systErr.all, SYST_ERR_LEN, TLM_SYSTERR);
 }
 
 void sendEEPROMErrorTlm(void){
@@ -123,7 +123,7 @@ void sendEEPROMErrorTlm(void){
     EEPErrors.readback = 2;
     EEPErrors.writeTimeout = 1;
 #endif
-    sendBuf(EEPErrors.all, EEP_ERR_LEN, TLM_EEPERR);
+    sendBufBE(EEPErrors.all, EEP_ERR_LEN, TLM_EEPERR);
 }
 
 void sendMotorStatTlm(enum SPIDest motor){
@@ -137,7 +137,7 @@ void sendMotorStatTlm(enum SPIDest motor){
             M1Stat.leftLimit = 0;
             M1Stat.rightLimit = 1;
 #endif
-            sendBuf(M1Stat.all, MOTOR_STAT_LEN, TLM_M1STAT);
+            sendBufBE(M1Stat.all, MOTOR_STAT_LEN, TLM_M1STAT);
             break;
         case DRV2:
 #ifdef TLM_TEST_PATTERN
@@ -148,7 +148,7 @@ void sendMotorStatTlm(enum SPIDest motor){
             M2Stat.leftLimit = 0;
             M2Stat.rightLimit = 1;
 #endif
-            sendBuf(M2Stat.all, MOTOR_STAT_LEN, TLM_M2STAT);
+            sendBufBE(M2Stat.all, MOTOR_STAT_LEN, TLM_M2STAT);
             break;
         case DRV3:
 #ifdef TLM_TEST_PATTERN
@@ -159,7 +159,7 @@ void sendMotorStatTlm(enum SPIDest motor){
             M3Stat.leftLimit = 0;
             M3Stat.rightLimit = 1;
 #endif
-            sendBuf(M3Stat.all, MOTOR_STAT_LEN, TLM_M3STAT);
+            sendBufBE(M3Stat.all, MOTOR_STAT_LEN, TLM_M3STAT);
             break;
         default:
             return;

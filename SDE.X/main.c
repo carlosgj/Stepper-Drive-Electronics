@@ -40,27 +40,27 @@ inline void init(void){
     commInit();
     sendSUSEVR(SUS_INITIAL);
     sendSwVerEVR();
-    
+    __delay_ms(10);
     //Initialize SPI
     SPIInit();
     sendSUSEVR(SUS_SPIDONE);
-    
+    __delay_ms(10);
     //Initialize EEPROM
     EEP_Init();
     sendSUSEVR(SUS_EEPDONE);
-    
+    __delay_ms(10);
     //Initialize ADC
     ADC_Init();
     sendSUSEVR(SUS_ADCDONE);
-    
+    __delay_ms(10);
     //Initialize TMC429
     TMC429Init();
     sendSUSEVR(SUS_TMC429DONE);
-    
+    __delay_ms(10);
     //Initialize TMC2130s
     TMC2130Init();
     sendSUSEVR(SUS_TMC2130DONE);
-    
+    __delay_ms(10);
     sendSUSEVR(SUS_INITDONE);
     
     INTCONbits.PEIE = TRUE; //Enable peripheral interrupts
@@ -90,7 +90,7 @@ void processCommand(void){
     switch(cmd->type){
         case CMD_NOOP:
             //Send ack
-            sendBuf((unsigned char *)0, 0, TLM_ACK);
+            sendBufBE((unsigned char *)0, 0, TLM_ACK);
             break;
         case CMD_MOTEN:
             if(cmd->payloadLen != 1){

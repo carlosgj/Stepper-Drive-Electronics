@@ -5,7 +5,37 @@ void HDLCInit(void){
 
 }
 
-void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
+void sendBufLE(unsigned char *buf, unsigned int count, enum TlmType commandByte){
+    unsigned int i = 0;
+    
+    //Write start byte
+    RS422_TxByte(HDLC_START);
+    
+    //Write command byte
+    if(IS_CONTROL(commandByte)){
+        RS422_TxByte(HDLC_ESCAPE);
+        RS422_TxByte((unsigned char)(commandByte ^ 0b00100000));
+    }
+    else{
+        RS422_TxByte(commandByte);
+    }
+    
+    //Perform byte-stuffing & write message
+    for(i=0; i<count; i++){
+        if( IS_CONTROL(buf[i]) ){
+            RS422_TxByte(HDLC_ESCAPE);
+            RS422_TxByte((unsigned char)(buf[i] ^ 0b00100000));
+        }
+        else{
+            RS422_TxByte(buf[i]);
+        }
+    }
+
+    RS422_TxByte(HDLC_STOP);
+    RS422_StartTx();
+}
+
+void sendBufBE(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     unsigned int i = 0;
     
     //Write start byte

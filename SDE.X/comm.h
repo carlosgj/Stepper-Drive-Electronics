@@ -8,7 +8,7 @@
 #include "HDLC.h"
 #include "EEPROM.h"
 
-#define PRINT(x) sendBuf((unsigned char *)x, sizeof(x), TLM_TEXT)
+#define PRINT(x) sendBufBE((unsigned char *)x, sizeof(x), TLM_TEXT)
 //#define PRINT(x) RS422_SendBytes((unsigned char *)x, sizeof(x))
 
 #define COMM_ERR_LEN (8)

@@ -36,7 +36,8 @@ unsigned char framePtr = 0;
 
 void HDLCInit(void);
 
-void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte);
+void sendBufBE(unsigned char *buf, unsigned int count, enum TlmType commandByte);
+void sendBufLE(unsigned char *buf, unsigned int count, enum TlmType commandByte);
 
 //This function is responsible for taking bytes out of the 422 Rx queue and 
 // chunking them up into HDLC frames.

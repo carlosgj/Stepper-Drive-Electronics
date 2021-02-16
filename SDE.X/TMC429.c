@@ -24,7 +24,7 @@ void TMC429Init(void){
     ifconfigVal.en_sd = TRUE; //Step/dir mode
     TMC429_write_reg(MC_PREFIX_COMMON | MC_COMMON_IFCONFIG, ifconfigVal.all);
     
-    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_TARGET, 100);
+    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_TARGET, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_ACTUAL, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_TARGET, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_ACTUAL, 0);

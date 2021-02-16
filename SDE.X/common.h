@@ -90,6 +90,15 @@ union TMC429MotorSettings_t {
     };
 };
 
+union U24Bytes_t {
+    uint24_t all;
+    struct{
+        unsigned char low;
+        unsigned char mid;
+        unsigned char high;
+    };
+};
+
 unsigned int msCount = 0;
 
 void ItoA(unsigned char val, char* dest);

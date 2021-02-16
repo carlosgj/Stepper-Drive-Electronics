@@ -12,13 +12,10 @@ enum CmdType{
     CMD_HOME =      132,
     CMD_RESET =     133,
     CMD_SETTLMP =   134,
-    CMD_SDF =  0x06,
-    CMD_VL6180DIS = 0x07,
-    CMD_LEDON =     0x08,
-    CMD_LEDOFF =    0x09,
-    CMD_LEDBRTAUTO =0x0A,
-    CMD_LEDBRTMAN = 0x0B,
-    CMD_LEDBRT =    0x0C,
+    CMD_READREG =   135,
+    CMD_WRITEREG =  136,
+    CMD_SETTARG =   137,
+    CMD_SETACT =    138
 };
 
 enum TlmType{

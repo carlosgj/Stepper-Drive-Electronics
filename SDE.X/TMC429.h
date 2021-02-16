@@ -96,5 +96,7 @@ unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data);
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data);
 void TMC429Init(void);
 void TMC429Periodic(void);
+inline void setTargetPos(enum SPIDest, uint24_t pos);
+inline void setActualPos(enum SPIDest, uint24_t pos);
 #endif
 

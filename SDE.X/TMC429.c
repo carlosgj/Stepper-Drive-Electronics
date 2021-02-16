@@ -51,6 +51,23 @@ void TMC429Periodic(void){
     counter = TMC429_PERIOD;
 }
 
+inline void setTargetPos(enum SPIDest motor, uint24_t pos){
+    switch(motor){
+        case DRV1:
+            TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_TARGET, pos);
+            break;
+        case DRV2:
+            TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_TARGET, pos);
+            break;
+        case DRV3:
+            TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_TARGET, pos);
+        default:
+            break;
+    }
+}
+
+inline void setActualPos(enum SPIDest, uint24_t pos);
+
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
     unsigned char success;
     TMC429_Tx_Datagram datagram;

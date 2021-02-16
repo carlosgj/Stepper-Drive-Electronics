@@ -85,11 +85,30 @@ void processCommand(void){
     if(msgProcessPtr == msgRxPtr){
         return;
     }
+    union U24Bytes_t val;
     struct rx_message_t *cmd = &messageBuf[msgProcessPtr];
     switch(cmd->type){
         case CMD_NOOP:
             //Send ack
             sendBuf((unsigned char *)0, 0, TLM_ACK);
+            break;
+        case CMD_MOTEN:
+            if(cmd->payloadLen != 1){
+                //Malformed command
+                break;
+            }
+            if(cmd->payload[0] == 1){
+                enableMotors();
+            }
+            else{
+                disableMotors();
+            }
+            break;
+        case CMD_SETTARG:
+            val.high = cmd->payload[1];
+            val.mid = cmd->payload[2];
+            val.low = cmd->payload[3];
+            setTargetPos((enum SPIDest)(cmd->payload[0]), val.all);
             break;
         default:
             commErrors.unkOpcode++;

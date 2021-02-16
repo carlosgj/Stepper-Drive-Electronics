@@ -41,8 +41,9 @@ void implementRx(void){
     static unsigned char isEscape = FALSE;
     static unsigned char isInMessage = FALSE;
     //__delay_ms(5);
-    for(toRead = (unsigned char)(255 - RXBUF_FREE); toRead > 0; toRead--){
+    for(toRead = (unsigned char)(0x3f - RXBUF_FREE); toRead > 0; toRead--){
         unsigned char newByte = rxbuf[rxbufread++];
+        rxbufread &= 0x3f;
         
         if(newByte == HDLC_ESCAPE){
             isEscape = TRUE;

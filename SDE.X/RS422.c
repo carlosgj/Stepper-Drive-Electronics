@@ -42,9 +42,7 @@ void RS422_TxByte(unsigned char theByte){
     if(TXBUF_FREE > 0){
         //There's room in the buffer
         txbuf[txbufwrite++] = theByte;
-        if(txbufwrite == TX_BUF_SIZE){
-            txbufwrite = 0;
-        }
+        txbufwrite &= 0x3f;
     }
     else{
         commErrors.txBuffOvf++;
@@ -72,9 +70,7 @@ inline void RS422_StartTx(void){
     }
     
     TXREG = txbuf[txbufread++];
-    if(txbufread == TX_BUF_SIZE){
-        txbufread = 0;
-    }
+    txbufread &= 0x3f;
     PIE1bits.TXIE = TRUE;
     
 #endif
@@ -89,9 +85,7 @@ inline void RS422TXISR(void){
     }
     //Transmit the next character
     TXREG = txbuf[txbufread++];
-    if(txbufread == TX_BUF_SIZE){
-        txbufread = 0;
-    }
+    txbufread &= 0x3f;
 
 #endif
 }
@@ -100,6 +94,7 @@ inline void RS422RXISR(void){
     if(RXBUF_FREE > 0){
         //Transfer into buffer
         rxbuf[rxbufwrite++] = RCREG;
+        rxbufwrite &= 0x3f;
     }
     else{
         volatile unsigned char foo = RCREG; //Throw byte away

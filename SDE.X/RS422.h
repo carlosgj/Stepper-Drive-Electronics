@@ -8,10 +8,10 @@
 
 #define RS422_BRG_VAL   (51)
 #define TX_BUF_SIZE     (64) //TODO
-#define RX_BUF_SIZE     (48) //TODO
+#define RX_BUF_SIZE     (64) //TODO
 
-#define TXBUF_FREE ((unsigned char)((txbufread-txbufwrite)-1))
-#define RXBUF_FREE ((unsigned char)((rxbufread-rxbufwrite)-1))
+#define TXBUF_FREE ( (unsigned char)(((txbufread-txbufwrite)-1) & 0x3f) )
+#define RXBUF_FREE ( (unsigned char)(((rxbufread-rxbufwrite)-1) & 0x3f) )
 
 //#define TXBUFWRITE(x) txbuf[txbufwrite++] = x
 

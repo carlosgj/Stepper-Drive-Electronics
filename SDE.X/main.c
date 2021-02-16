@@ -13,7 +13,7 @@ inline void init(void){
     INTDIS;
     //Setup pins
     TRISAbits.TRISA0 = OUTPUT;
-    DRVDS;
+    disableMotors();
     
     //Setup oscillator
     OSCCONbits.SPLLEN = TRUE; //Enable 4x PLL
@@ -29,6 +29,8 @@ inline void init(void){
     ANSELB = 0;
     
     memset(systErr.all, 0, SYST_ERR_LEN); //Initialize system error counters
+    systStat.TMC429Stat = TMC429_UNINIT;
+    systStat.inputVoltage = 0x0000;
     
     timerInit();
     __delay_ms(400);
@@ -39,13 +41,25 @@ inline void init(void){
     sendSUSEVR(SUS_INITIAL);
     sendSwVerEVR();
     
+    //Initialize SPI
     SPIInit();
+    sendSUSEVR(SUS_SPIDONE);
     
+    //Initialize EEPROM
     EEP_Init();
+    sendSUSEVR(SUS_EEPDONE);
     
+    //Initialize ADC
     ADC_Init();
+    sendSUSEVR(SUS_ADCDONE);
     
+    //Initialize TMC429
+    TMC429Init();
+    sendSUSEVR(SUS_TMC429DONE);
+    
+    //Initialize TMC2130s
     TMC2130Init();
+    sendSUSEVR(SUS_TMC2130DONE);
     
     sendSUSEVR(SUS_INITDONE);
     
@@ -87,6 +101,16 @@ void processCommand(void){
 
 void getInputVoltage(void){
     takeMeasurement(ADCH_AN2, 4, &(systStat.inputVoltage));
+}
+
+inline void enableMotors(){
+    LATAbits.LATA0 = FALSE;
+    systStat.motEn = TRUE;
+}
+
+inline void disableMotors(){
+    LATAbits.LATA0 = TRUE;
+    systStat.motEn = FALSE;
 }
 
 void interrupt ISR(void){

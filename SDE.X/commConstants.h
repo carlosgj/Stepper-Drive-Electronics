@@ -44,6 +44,11 @@ enum EVRID {
 
 enum StartupSeqLocation {
     SUS_INITIAL =       0x00,
+    SUS_SPIDONE =       0x01,
+    SUS_EEPDONE =       0x02,
+    SUS_ADCDONE =       0x03,
+    SUS_TMC429DONE =    0x04,
+    SUS_TMC2130DONE =   0x05,
     SUS_INITDONE =      0x07,
 };
 

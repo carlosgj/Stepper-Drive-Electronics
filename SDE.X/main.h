@@ -18,15 +18,14 @@
 #include "adc.h"
 //#include "motioncontrol.h"
 
-#define DRVEN (LATAbits.LATA0 = FALSE)
-#define DRVDS (LATAbits.LATA0 = TRUE)
-
 void main(void);
 inline void init(void);
 inline void run(void);
 void getInputVoltage(void);
 inline void halt(void);
 void processCommand(void);
+inline void enableMotors(void);
+inline void disableMotors(void);
 
 #endif	
 

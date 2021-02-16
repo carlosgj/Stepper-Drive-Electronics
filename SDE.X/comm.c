@@ -48,7 +48,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M1Stat == 0){
-        //TODO
+        sendMotorStatTlm(DRV1);
         TlmElapsed.M1Stat = TlmPeriodTab.M1Stat;
     }
     else{
@@ -56,7 +56,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M2Stat == 0){
-        //TODO
+        sendMotorStatTlm(DRV2);
         TlmElapsed.M2Stat = TlmPeriodTab.M2Stat;
     }
     else{
@@ -64,7 +64,7 @@ void sendTlm(){
     }
     
     if(TlmElapsed.M3Stat == 0){
-        //TODO
+        sendMotorStatTlm(DRV3);
         TlmElapsed.M3Stat = TlmPeriodTab.M3Stat;
     }
     else{

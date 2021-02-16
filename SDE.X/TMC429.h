@@ -3,6 +3,7 @@
 
 #include <xc.h> 
 #include <stdint.h>
+#include <string.h>
 #include "common.h"
 #include "SPI.h"
 
@@ -45,6 +46,10 @@
 #define MC_COMMON_RESVD6    (14)
 #define MC_COMMON_CONFIG    (15)
 
+#define TMC429_UNINIT       (0)
+#define TMC429_GOOD         (1)
+#define TMC429_BAD_VERSION  (2)
+
 typedef union TMC429_Tx_Datagram_t {
     unsigned char bytes[4];
     struct{
@@ -72,7 +77,6 @@ typedef union TMC429_Rx_Datagram_t {
 
 union MC_IFCONFIG_t {
     uint24_t all;
-    unsigned char bytes[3];
     struct {
         unsigned inv_ref    :1;
         unsigned sdo_int    :1;
@@ -88,6 +92,7 @@ union MC_IFCONFIG_t {
 
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data);
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data);
+void TMC429Init(void);
 void TMC429Periodic(void);
 #endif
 

@@ -49,6 +49,7 @@ void sendCommErrorTlm(void);
 void sendSystStatTlm(void);
 void sendSystErrorTlm(void);
 void sendEEPROMErrorTlm(void);
+void sendMotorStatTlm(enum SPIDest motor);
 void sendSUSEVR(enum StartupSeqLocation loc);
 void sendSwVerEVR(void);
 

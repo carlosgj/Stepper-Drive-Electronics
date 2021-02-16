@@ -38,6 +38,10 @@
 #define DRV_REG_ENCM_CTRL   (0x72)
 #define DRV_REG_LOST_STEPS  (0x73)
 
+#define TMC2130_UNINIT       (0)
+#define TMC2130_GOOD         (1)
+#define TMC2130_BAD_VERSION  (2)
+
 typedef union TMC2130_Tx_Datagram_t {
     unsigned char bytes[5];
     struct{

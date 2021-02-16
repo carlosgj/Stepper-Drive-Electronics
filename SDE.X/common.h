@@ -16,6 +16,10 @@
 //Uncomment to send one byte at a time to the UART, instead of using software buffering
 //#define UNBUFFERED_SER
 
+//Uncomment to send test patterns in packets instead of real telemetry
+//#define TLM_TEST_PATTERN
+
+
 #define TRUE 1
 #define FALSE 0
 
@@ -42,13 +46,18 @@ enum MotorState{
     MS_HOMED
 };
 
-struct MotorStatus_t {
-    unsigned isHomed    :1;
-    unsigned isHoming   :1;
-    unsigned leftLimit  :1;
-    unsigned rightLimit :1;
-    uint24_t target;
-    uint24_t actual;
+#define MOTOR_STAT_LEN (7)
+union MotorStatus_t {
+    unsigned char all[MOTOR_STAT_LEN];
+    struct{
+        uint24_t actual;
+        uint24_t target;
+        unsigned TMC2130Stat:2;
+        unsigned homeStat   :2;
+        unsigned leftLimit  :1;
+        unsigned rightLimit :1;
+        unsigned RESERVED   :2;
+    };
 } M1Stat, M2Stat, M3Stat;
 
 #define SYST_ERR_LEN (1)
@@ -65,7 +74,8 @@ union SystStatus_t{
     struct{
         uint16_t inputVoltage;
         unsigned motEn  :1;
-        unsigned RESERVED :7;
+        unsigned TMC429Stat :2;
+        unsigned RESERVED :5;
     };
 } systStat;
 

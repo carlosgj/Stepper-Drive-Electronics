@@ -21,13 +21,13 @@ void sendBuf(unsigned char *buf, unsigned int count, enum TlmType commandByte){
     }
     
     //Perform byte-stuffing & write message
-    for(i=0; i<count; i++){
-        if( IS_CONTROL(buf[i]) ){
+    for(i=count; i>0; i--){
+        if( IS_CONTROL(buf[i-1]) ){
             RS422_TxByte(HDLC_ESCAPE);
-            RS422_TxByte((unsigned char)(buf[i] ^ 0b00100000));
+            RS422_TxByte((unsigned char)(buf[i-1] ^ 0b00100000));
         }
         else{
-            RS422_TxByte(buf[i]);
+            RS422_TxByte(buf[i-1]);
         }
     }
 

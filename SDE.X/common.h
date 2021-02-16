@@ -56,7 +56,8 @@ union MotorStatus_t {
         unsigned homeStat   :2;
         unsigned leftLimit  :1;
         unsigned rightLimit :1;
-        unsigned RESERVED   :2;
+        unsigned onTarget   :1;
+        unsigned RESERVED   :1;
     };
 } M1Stat, M2Stat, M3Stat;
 
@@ -78,6 +79,16 @@ union SystStatus_t{
         unsigned RESERVED :5;
     };
 } systStat;
+
+#define TMC429_MOTOR_SETTINGS_LEN (6)
+union TMC429MotorSettings_t {
+    unsigned char all[TMC429_MOTOR_SETTINGS_LEN];
+    struct{
+        uint16_t VMIN;
+        uint16_t VMAX;
+        uint16_t AMAX; 
+    };
+};
 
 unsigned int msCount = 0;
 

@@ -50,6 +50,8 @@
 #define TMC429_GOOD         (1)
 #define TMC429_BAD_VERSION  (2)
 
+#define TMC429_PERIOD (10)
+
 typedef union TMC429_Tx_Datagram_t {
     unsigned char bytes[4];
     struct{

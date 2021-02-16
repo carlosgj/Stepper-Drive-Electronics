@@ -24,16 +24,21 @@ void TMC429Init(void){
     ifconfigVal.en_sd = TRUE; //Step/dir mode
     TMC429_write_reg(MC_PREFIX_COMMON | MC_COMMON_IFCONFIG, ifconfigVal.all);
     
-    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_TARGET, 0);
+    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_TARGET, 100);
     TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_ACTUAL, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_TARGET, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_ACTUAL, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_TARGET, 0);
     TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_ACTUAL, 0);
+    
+    //Test settings
+    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_VMIN, 1);
+    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_VMAX, 10);
+    TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_AMAX, 20);
 }
 
 void TMC429Periodic(void){
-    static unsigned char counter = 10;
+    static unsigned char counter = TMC429_PERIOD;
     if(counter-- != 0){
         return;
     }
@@ -43,7 +48,7 @@ void TMC429Periodic(void){
     TMC429_read_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_ACTUAL, &M2Stat.actual);
     TMC429_read_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_TARGET, &M3Stat.target);
     TMC429_read_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_ACTUAL, &M3Stat.actual);
-    counter = 10;
+    counter = TMC429_PERIOD;
 }
 
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
@@ -61,7 +66,12 @@ unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data){
         return success;
     }
     
-    //TODO: handle status bits in result
+    M1Stat.leftLimit = result.rs1;
+    M1Stat.onTarget = result.eqt1;
+    M2Stat.leftLimit = result.rs2;
+    M2Stat.onTarget = result.eqt2;
+    M3Stat.leftLimit = result.rs3;
+    M3Stat.onTarget = result.eqt3;
     
     *data = result.data;
     

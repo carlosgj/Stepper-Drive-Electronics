@@ -69,7 +69,7 @@ inline void init(void){
 inline void run(void){    
     implementRx();
     processCommand();
-    //TMC429Periodic();
+    TMC429Periodic();
     //TMC2130Periodic();
     getInputVoltage();
     sendTlm();

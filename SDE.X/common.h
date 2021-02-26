@@ -92,9 +92,21 @@ union TMC429MotorSettings_t {
 
 union U24Bytes_t {
     uint24_t all;
+    unsigned char bytes[3];
     struct{
         unsigned char low;
         unsigned char mid;
+        unsigned char high;
+    };
+};
+
+union U32Bytes_t {
+    uint32_t all;
+    unsigned char bytes[4];
+    struct{
+        unsigned char low;
+        unsigned char lmid;
+        unsigned char hmid;
         unsigned char high;
     };
 };

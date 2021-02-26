@@ -12,10 +12,12 @@ enum CmdType{
     CMD_HOME =      132,
     CMD_RESET =     133,
     CMD_SETTLMP =   134,
-    CMD_READREG =   135,
-    CMD_WRITEREG =  136,
-    CMD_SETTARG =   137,
-    CMD_SETACT =    138
+    CMD_T429READ =  135,
+    CMD_T429WRITE = 136,
+    CMD_T2130READ = 137,
+    CMD_T2130WRITE= 138,
+    CMD_SETTARG =   139,
+    CMD_SETACT =    140
 };
 
 enum TlmType{
@@ -30,7 +32,8 @@ enum TlmType{
     TLM_M1STAT =    8,
     TLM_M2STAT =    9,
     TLM_M3STAT =    10,
-    TLM_REG =       11
+    TLM_T429REG =   11,
+    TLM_T2130REG =  12
 };
 
 enum EVRID {

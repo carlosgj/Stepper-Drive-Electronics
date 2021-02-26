@@ -85,7 +85,8 @@ void processCommand(void){
     if(msgProcessPtr == msgRxPtr){
         return;
     }
-    union U24Bytes_t val;
+    union U24Bytes_t val24;
+    union U32Bytes_t val32;
     struct rx_message_t *cmd = &messageBuf[msgProcessPtr];
     switch(cmd->type){
         case CMD_NOOP:
@@ -104,11 +105,32 @@ void processCommand(void){
                 disableMotors();
             }
             break;
+        case CMD_T429READ:
+            TMC429_read_reg(cmd->payload[0], &(val24.all));
+            sendBufBE(val24.bytes, 3, TLM_T429REG);
+            break;
+        case CMD_T429WRITE:
+            val24.high = cmd->payload[1];
+            val24.mid = cmd->payload[2];
+            val24.low = cmd->payload[3];
+            TMC429_write_reg(cmd->payload[0], val24.all);
+            break;
+        case CMD_T2130READ:
+            TMC2130_read_reg((enum SPIDest)(cmd->payload[0]), cmd->payload[1], &(val32.all));
+            sendBufBE(val32.bytes, 4, TLM_T2130REG);
+            break;
+        case CMD_T2130WRITE:
+            val32.high = cmd->payload[2];
+            val32.hmid = cmd->payload[3];
+            val32.lmid = cmd->payload[4];
+            val32.low = cmd->payload[5];
+            TMC2130_write_reg(cmd->payload[0], cmd->payload[1], val32.all);
+            break;
         case CMD_SETTARG:
-            val.high = cmd->payload[1];
-            val.mid = cmd->payload[2];
-            val.low = cmd->payload[3];
-            setTargetPos((enum SPIDest)(cmd->payload[0]), val.all);
+            val24.high = cmd->payload[1];
+            val24.mid = cmd->payload[2];
+            val24.low = cmd->payload[3];
+            setTargetPos((enum SPIDest)(cmd->payload[0]), val24.all);
             break;
         default:
             commErrors.unkOpcode++;

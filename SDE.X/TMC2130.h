@@ -66,6 +66,31 @@ typedef union TMC2130_Rx_Datagram_t {
     };
 } TMC2130_Rx_Datagram;
 
+union TMC2130_GCONF_t {
+    uint32_t all;
+    unsigned char bytes[4];
+    struct{
+        unsigned I_scale_analog     :1;
+        unsigned internal_Rsense    :1;
+        unsigned en_pwm_mode        :1;
+        unsigned enc_communication  :1;
+        unsigned shaft              :1;
+        unsigned diag0_error        :1;
+        unsigned diag0_otpw         :1;
+        unsigned diag0_stall        :1;
+        unsigned diag1_stall        :1;
+        unsigned diag1_index        :1;
+        unsigned diag1_onstate      :1;
+        unsigned diag1_steps_skipped:1;
+        unsigned diag0_int_pushpull :1;
+        unsigned diag1_pushpull     :1;
+        unsigned small_hysteresis   :1;
+        unsigned stop_enable        :1;
+        unsigned direct_mode        :1;
+        unsigned test_mode          :1;
+    };
+};
+
 union TMC2130_GSTAT_t {
     uint32_t all;
     unsigned char bytes[4];

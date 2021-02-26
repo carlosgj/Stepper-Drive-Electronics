@@ -5,6 +5,7 @@ void TMC2130Init(void){
     //Verify ID reg
     uint32_t data;
     
+    TMC2130_read_reg(DRV1, DRV_REG_GSTAT, &data);
     TMC2130_read_reg(DRV1, DRV_REG_IOIN, &data);
     if((data >> 24) == 0x11){
         M1Stat.TMC2130Stat = TMC2130_GOOD;
@@ -13,6 +14,7 @@ void TMC2130Init(void){
         M1Stat.TMC2130Stat = TMC2130_BAD_VERSION;
     }
     
+    TMC2130_read_reg(DRV1, DRV_REG_GSTAT, &data);
     TMC2130_read_reg(DRV2, DRV_REG_IOIN, &data);
     if((data >> 24) == 0x11){
         M2Stat.TMC2130Stat = TMC2130_GOOD;
@@ -21,6 +23,7 @@ void TMC2130Init(void){
         M2Stat.TMC2130Stat = TMC2130_BAD_VERSION;
     }
     
+    TMC2130_read_reg(DRV1, DRV_REG_GSTAT, &data);
     TMC2130_read_reg(DRV3, DRV_REG_IOIN, &data);
     if((data >> 24) == 0x11){
         M3Stat.TMC2130Stat = TMC2130_GOOD;

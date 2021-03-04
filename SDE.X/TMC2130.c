@@ -60,6 +60,9 @@ unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t
     datagram.addr = addr;
     datagram.data = 0;
     
+    //Setup address
+    SPIXfer(target, datagram.bytes, result.bytes, 5);
+    //Actually get data
     success = SPIXfer(target, datagram.bytes, result.bytes, 5);
     
     if(success != 0){

@@ -91,10 +91,14 @@ void implementRx(void){
                 continue;
             }
             else{
-                newByte = (unsigned char)(newByte ^ 0b00100000);
+                frameBuf[framePtr++] = (unsigned char)(newByte ^ 0b00100000);
             }
+            isEscape = FALSE;
         }
-        frameBuf[framePtr++] = newByte;
+        else{
+            frameBuf[framePtr++] = newByte;
+        }
+        
         
         if(newByte == HDLC_STOP){
             if(isInMessage){

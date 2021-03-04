@@ -96,7 +96,7 @@ try:
             print "Got command"
             txbuf = chr(0x7f)
             for char in cmddata:
-                if char in [0x7d, 0x7e, 0x7f]:
+                if ord(char) in [0x7d, 0x7e, 0x7f]:
                     txbuf += chr(0x7d)
                     txbuf += chr(ord(char) ^ 0b00100000)
                 else:

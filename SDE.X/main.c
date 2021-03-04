@@ -132,6 +132,48 @@ void processCommand(void){
             val24.low = cmd->payload[3];
             setTargetPos((enum SPIDest)(cmd->payload[0]), val24.all);
             break;
+        case CMD_HOME:
+            if(cmd->payloadLen != 1){
+                //Malformed command
+                //TODO: Error handling
+                break;
+            }
+            switch(cmd->payload[0]){
+                case 1:
+                    //Home motor 1
+                    if(M1Stat.homeStat == MS_IDLE || M1Stat.homeStat == MS_HOMED){
+                        M1Stat.homeStat = MS_HOMING;
+                        M1HomeStep = HS_INIT;
+                    }
+                    else{
+                        //TODO: Error handling
+                    }
+                    break;
+                case 2:
+                    //Home motor 2
+                    if(M2Stat.homeStat == MS_IDLE || M2Stat.homeStat == MS_HOMED){
+                        M2Stat.homeStat = MS_HOMING;
+                        M2HomeStep = HS_INIT;
+                    }
+                    else{
+                        //TODO: Error handling
+                    }
+                    break;
+                case 3:
+                    //Home motor 3
+                    if(M3Stat.homeStat == MS_IDLE || M3Stat.homeStat == MS_HOMED){
+                        M3Stat.homeStat = MS_HOMING;
+                        M3HomeStep = HS_INIT;
+                    }
+                    else{
+                        //TODO: Error handling
+                    }
+                    break;
+                default:
+                    //TODO: error handling
+                    break;
+            }
+            break;
         default:
             commErrors.unkOpcode++;
             break;

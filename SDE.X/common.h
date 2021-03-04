@@ -41,9 +41,10 @@ enum SPIDest{
 };
 
 enum MotorState{
-    MS_IDLE,
-    MS_HOMING,
-    MS_HOMED
+    MS_IDLE =   0,
+    MS_HOMING = 1,
+    MS_HOMED =  2, 
+    MS_HOME_ERR=3
 };
 
 #define MOTOR_STAT_LEN (7)

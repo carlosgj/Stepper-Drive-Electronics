@@ -92,11 +92,25 @@ union MC_IFCONFIG_t {
     };
 };
 
+enum MotorHomingStep {
+    HS_INIT,
+    HS_MOVEOFF,
+    HS_ISOFF,
+    HS_MOVETO, 
+    HS_MOVEBACK
+} M1HomeStep, M2HomeStep, M3HomeStep;
+
+uint24_t M1HomingDifference, M2HomingDifference, M3HomingDifference;
+uint24_t M1TrigPos, M2TrigPos, M3TrigPos;
+
 unsigned char TMC429_read_reg(unsigned char addr, uint24_t *data);
 unsigned char TMC429_write_reg(unsigned char addr, uint24_t data);
 void TMC429Init(void);
 void TMC429Periodic(void);
-inline void setTargetPos(enum SPIDest, uint24_t pos);
-inline void setActualPos(enum SPIDest, uint24_t pos);
+inline void TMC429Homing(enum SPIDest motor);
+inline void primeLatched(enum SPIDest motor);
+inline uint24_t getLatched(enum SPIDest motor);
+inline void setTargetPos(enum SPIDest motor, uint24_t pos);
+inline void setActualPos(enum SPIDest motor, uint24_t pos);
 #endif
 

@@ -70,7 +70,7 @@ inline void run(void){
     implementRx();
     processCommand();
     TMC429Periodic();
-    //TMC2130Periodic();
+    TMC2130Periodic();
     getInputVoltage();
     sendTlm();
     __delay_ms(10);
@@ -194,6 +194,9 @@ inline void enableMotors(){
 inline void disableMotors(){
     LATAbits.LATA0 = TRUE;
     systStat.motEn = FALSE;
+    M1Stat.homeStat = MS_IDLE;
+    M2Stat.homeStat = MS_IDLE;
+    M3Stat.homeStat = MS_IDLE;
 }
 
 void interrupt ISR(void){

@@ -39,6 +39,12 @@ void TMC429Init(void){
     TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_VMIN, 1);
     TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_VMAX, 10);
     TMC429_write_reg(MC_PREFIX_MOTOR1 | MC_MOTOR_AMAX, 20);
+    TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_VMIN, 1);
+    TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_VMAX, 10);
+    TMC429_write_reg(MC_PREFIX_MOTOR2 | MC_MOTOR_AMAX, 20);
+    TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_VMIN, 1);
+    TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_VMAX, 10);
+    TMC429_write_reg(MC_PREFIX_MOTOR3 | MC_MOTOR_AMAX, 20);
 }
 
 void TMC429Periodic(void){
@@ -148,6 +154,18 @@ inline void TMC429Homing(enum SPIDest motor){
             trigPos = &M1TrigPos;
             step = &M1HomeStep;
             break;
+        case DRV2:
+            mstat = &M2Stat;
+            homeDiff = &M2HomingDifference;
+            trigPos = &M2TrigPos;
+            step = &M2HomeStep;
+            break;
+        case DRV3:
+            mstat = &M3Stat;
+            homeDiff = &M3HomingDifference;
+            trigPos = &M3TrigPos;
+            step = &M3HomeStep;
+            break;
         default:
             return;
     }
@@ -205,7 +223,7 @@ inline void TMC429Homing(enum SPIDest motor){
                 if(mstat->leftLimit){
                     *trigPos = getLatched(motor);
                     //Go back to trigger position, in case we overshot
-                    setTargetPos(motor, M1TrigPos);
+                    setTargetPos(motor, *trigPos);
                     *step = HS_MOVEBACK;
                 }
                 break;

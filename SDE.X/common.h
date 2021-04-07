@@ -28,7 +28,7 @@
 
 #define _XTAL_FREQ (32000000)
 
-#define SW_VER_STR "0.0.1"
+#define SW_VER_STR "0.0.2"
 
 #define INTEN (INTCONbits.GIE = TRUE)
 #define INTDIS (INTCONbits.GIE = FALSE)

@@ -58,7 +58,7 @@ inline void init(void){
     sendSUSEVR(SUS_TMC429DONE);
     __delay_ms(10);
     //Initialize TMC2130s
-    TMC2130Init();
+    TMC2130InitAll();
     sendSUSEVR(SUS_TMC2130DONE);
     __delay_ms(10);
     sendSUSEVR(SUS_INITDONE);
@@ -173,6 +173,31 @@ void processCommand(void){
                     //TODO: error handling
                     break;
             }
+            break;
+            
+        case CMD_SETMOTDIR:
+            setMotorDirection(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_SETHOLDCURR:
+            setHoldCurrent(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_SETRUNCURR:
+            setRunCurrent(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_SETHLDRMPTIME:
+            setHoldCurrentRampTime(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_SETHLDDELAY:
+            setHoldDelay(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_ENDBLEDGESTEP:
+            setDoubleEdgeStep(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_ENMSINTERP:
+            setMicrostepInterpolation(cmd->payload[0], cmd->payload[1]);
+            break;
+        case CMD_SETMS:
+            setMicrostepping(cmd->payload[0], cmd->payload[1]);
             break;
         default:
             commErrors.unkOpcode++;

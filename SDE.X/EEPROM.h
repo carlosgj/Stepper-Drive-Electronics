@@ -5,11 +5,11 @@
 #include <string.h>
 #include "common.h"
 
-#define EEP_ERR_SUCCESS     (0)
-#define EEP_ERR_WTIMEOUT    (1)
-#define EEP_ERR_READBACK    (2)
-#define EEP_ERR_COMPLEMENT  (3)
-#define EEP_ERR_INVAL_ADR   (4)
+#define EEP_ERR_SUCCESS     (0u)
+#define EEP_ERR_WTIMEOUT    (1u)
+#define EEP_ERR_READBACK    (2u)
+#define EEP_ERR_COMPLEMENT  (3u)
+#define EEP_ERR_INVAL_ADR   (4u)
 
 #define EEP_ERR_LEN (3)
 

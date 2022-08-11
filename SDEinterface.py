@@ -22,7 +22,7 @@ def gettime():
     return now.strftime('%Y-%m-%dT%H:%M:%S')+".%d"%millisecond
 
 def processPacket(packet):
-    #print ' '.join(["%02x"%ord(x) for x in packet])
+    print ' '.join(["%02x"%ord(x) for x in packet])
     if len(packet) < 1:
         print "Empty packet!"
         return
@@ -71,18 +71,22 @@ try:
         if data:
             for char in data:
                 if ord(char) == 0x7e:
+                    #print "Got end"
                     if isInPacket:
                         isInPacket = False
                         processPacket(thisPacket)
                         thisPacket = ""
                 elif ord(char) == 0x7f:
+                    #print "Got start"
                     if not isInPacket:
                         isInPacket = True
                         thisPacket = ""
                 elif ord(char) == 0x7d:
                     #Escape
+                    #print "Got escape"
                     isEscape = True
                 else:
+                    #print "%02x"%ord(char)
                     if isEscape:
                         thisPacket += chr(ord(char) ^ 0b00100000)
                         isEscape = False

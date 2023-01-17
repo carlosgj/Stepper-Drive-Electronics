@@ -8,7 +8,7 @@ void EEP_Init(void){
 }
 
 unsigned char EEP_Read(unsigned char address, unsigned char len, unsigned char *dest){
-    if((address+len) > 127){
+    if((unsigned char)(address+len) > (unsigned char)127){
         return EEP_ERR_INVAL_ADR; //TODO
     }
     unsigned char status = EEP_ERR_SUCCESS;
@@ -23,7 +23,7 @@ unsigned char EEP_Read(unsigned char address, unsigned char len, unsigned char *
 }
 
 unsigned char EEP_Write(unsigned char address, unsigned char len, unsigned char *data){
-    if((address+len) > 127){
+    if((unsigned char)(address+len) > 127u){
         return EEP_ERR_INVAL_ADR; //TODO
     }
     unsigned char status = EEP_ERR_SUCCESS;
@@ -38,13 +38,13 @@ unsigned char EEP_Write(unsigned char address, unsigned char len, unsigned char 
 }
 
 unsigned char EEP_ReadComp(unsigned char address, unsigned char *dest){
-    unsigned char compAddr = (unsigned char)(address + 128);
+    unsigned char compAddr = (unsigned char)(address + 128u);
     //Read normal data
     unsigned char data = EEP_ReadByte(address);
     //Read complement data
     unsigned char compData = EEP_ReadByte(compAddr);
     
-    if(data != ~compData){
+    if(data != (unsigned char)(~compData)){
         //Complement error
         EEPErrors.complement++;
         return EEP_ERR_COMPLEMENT;
@@ -55,7 +55,7 @@ unsigned char EEP_ReadComp(unsigned char address, unsigned char *dest){
 }
 
 unsigned char EEP_WriteComp(unsigned char address, unsigned char data){
-    unsigned char compAddr = (unsigned char)(address + 128);
+    unsigned char compAddr = (unsigned char)(address + 128u);
     unsigned char compData = (unsigned char)(~data);
     
     unsigned char result = EEP_ERR_SUCCESS;
@@ -81,7 +81,7 @@ unsigned char EEP_WriteByte(unsigned char address, unsigned char data){
     
     //Wait for write to finish
     unsigned char i = 255; //TODO
-    while(i>0){
+    while(i>0u){
         i--;
         if(PIR2bits.EEIF){
             //Write finished

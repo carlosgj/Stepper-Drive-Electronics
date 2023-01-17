@@ -50,7 +50,6 @@ unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rx
             break;
         default:
             return 1; //TODO
-            break;
     }
     
     unsigned char i = count;
@@ -85,7 +84,6 @@ unsigned char SPIXfer(enum SPIDest dest, unsigned char *txBuf, unsigned char *rx
             break;
         default:
             return 1; //TODO
-            break;
     }
     return 0; //TODO
 }

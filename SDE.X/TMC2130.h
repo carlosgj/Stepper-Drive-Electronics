@@ -3,6 +3,7 @@
 
 #include <xc.h> 
 #include <stdint.h>
+#include <stdbool.h>
 #include "common.h"
 #include "SPI.h"
 
@@ -41,6 +42,8 @@
 #define TMC2130_UNINIT       (0)
 #define TMC2130_GOOD         (1)
 #define TMC2130_BAD_VERSION  (2)
+
+#define DRV_REG_IHOLD_IRUN_DEFAULT       (0x00000005)
 
 typedef union TMC2130_Tx_Datagram_t {
     unsigned char bytes[5];
@@ -101,9 +104,70 @@ union TMC2130_GSTAT_t {
     };
 };
 
-void TMC2130Init(void);
+union TMC2130_IHOLD_IRUN_t {
+    uint32_t all;
+    unsigned char bytes[4];
+    struct{
+        unsigned IHOLD      :5;
+        unsigned rsvd1      :3;
+        unsigned IRUN       :5;
+        unsigned rsvd2      :3;
+        unsigned IHOLDDELAY :4;
+    };
+};
+
+union TMC2130_CHOPCONF_t{
+    uint32_t all;
+    unsigned char bytes[4];
+    struct{
+        unsigned toff   :4;
+        unsigned hstrt  :3;
+        unsigned hend   :4;
+        unsigned fd3    :1;
+        unsigned disfdcc:1;
+        unsigned rndtf  :1;
+        unsigned chm    :1;
+        unsigned tbl    :2;
+        unsigned vsense :1;
+        unsigned vhighfs:1;
+        unsigned vhighchm:1;
+        unsigned sync   :4;
+        unsigned mres   :4;
+        unsigned intpol :1;
+        unsigned dedge  :1;
+        unsigned diss2g :1;
+        unsigned reserved:1;
+    };
+};
+
+struct TMC2130ShadowRegs_t {
+    union TMC2130_IHOLD_IRUN_t IHOLD_IRUN;
+    uint8_t TPOWERDOWN;
+    uint24_t TPWMTHRS;
+    uint24_t TCOOLTHRS;
+    uint24_t THIGH;
+    
+}TMC2130ShadowRegs;
+
+void TMC2130Init(enum SPIDest drv);
+void TMC2130InitAll(void);
+void TMC2130InitShadowRegs(void);
 unsigned char TMC2130_read_reg(enum SPIDest target, unsigned char addr, uint32_t *data);
 unsigned char TMC2130_write_reg(enum SPIDest target, unsigned char addr, uint32_t data);
 void TMC2130Periodic(void);
+
+void setMotorDirection(enum SPIDest drv, bool invert);
+void setHoldCurrent(enum SPIDest drv, unsigned char current);
+void setRunCurrent(enum SPIDest drv, unsigned char current);
+void setHoldCurrentRampTime(enum SPIDest drv, unsigned char time);
+void setHoldDelay(enum SPIDest drv, unsigned char delay);
+void setDoubleEdgeStep(enum SPIDest drv, bool enable);
+void setMicrostepInterpolation(enum SPIDest drv, bool enable);
+void setMicrostepping(enum SPIDest drv, unsigned char microstepping);
+void setCurrentSensitivity(enum SPIDest drv, bool sensitivity);
+void setComparatorBlankTime(enum SPIDest drv, unsigned char blankTime);
+void setChopperMode(enum SPIDest drv, bool constantOff);
+void setTOFFTime(enum SPIDest drv, unsigned char time);
+
 #endif
 
